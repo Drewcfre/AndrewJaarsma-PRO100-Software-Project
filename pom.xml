@@ -28,11 +28,13 @@
             <version>21.1</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-media -->
         <dependency>
-            <groupId>com.github.axet</groupId>
-            <artifactId>TarsosDSP</artifactId>
-            <version>2.4-1</version>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>21.0.1</version>
         </dependency>
+
     </dependencies>
 
     <build>
