@@ -28,7 +28,6 @@
             <version>21.1</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-media -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-media</artifactId>
@@ -54,10 +53,10 @@
                     <compress>2</compress>
                     <noHeaderFiles>true</noHeaderFiles>
                     <noManPages>true</noManPages>
-                    <launcher>Start-game</launcher>
-                    <jlinkImageName>Elecium</jlinkImageName>
-                    <jlinkZipName>Elecium</jlinkZipName>
-                    <mainClass>com.noGroup.EleciumApp</mainClass>
+                    <launcher>game</launcher>
+                    <jlinkImageName>Rhythm</jlinkImageName>
+                    <jlinkZipName>Rhythm</jlinkZipName>
+                    <mainClass>com.noGroup.RhythmApp</mainClass>
                 </configuration>
             </plugin>
         </plugins>

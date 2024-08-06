@@ -20,7 +20,7 @@ public class AudioController extends Application {
 
 @Override
     public void start(Stage stage) throws Exception {
-        String mediaLocation = "src\\main\\resources\\RickRoll.wav";
+        String mediaLocation = "src/main/resources/RickRoll.wav";
         Media media = new Media(new File(mediaLocation).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
 

@@ -9,6 +9,7 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import javafx.scene.input.KeyCode;
 import project.team.pro100.controller.AudioController;
+import project.team.pro100.view.Graphics;
 
 import static com.almasb.fxgl.dsl.FXGL.onKeyDown;
 
@@ -26,6 +27,7 @@ public class RhythmApp extends GameApplication {
     }
 
     @Override protected void initGame() {
+        Graphics.drawMainMenu();
         // Focus on game logic for week 1.
     }
 
