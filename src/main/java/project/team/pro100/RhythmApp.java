@@ -8,13 +8,25 @@ package project.team.pro100;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.entity.Entity;
+import javafx.scene.chart.XYChart;
 import javafx.scene.input.KeyCode;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import project.team.pro100.model.Factory;
+
+import java.io.File;
+import java.util.ArrayList;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class RhythmApp extends GameApplication {
+    int a = 0;
+    int b = 0;
+    int c = 0;
+    int d = 0;
+
     public static void main(String[] args) throws Exception {
         launch(args);
     }
@@ -35,11 +47,51 @@ public class RhythmApp extends GameApplication {
         spawn("ArrowBlue",   192, 64);
         spawn("ArrowYellow", 256, 0);
 
-        var player = spawn("ArrowGreen", 230, 300);
+        ArrayList<Entity> red    = new ArrayList<>();
+        ArrayList<Entity> green  = new ArrayList<>();
+        ArrayList<Entity> blue   = new ArrayList<>();
+        ArrayList<Entity> yellow = new ArrayList<>();
+
+        String mediaLocation = "src/main/resources/assets/music/RickRoll.wav";
+        Media media = new Media(new File(mediaLocation).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+
+        mediaPlayer.setAudioSpectrumListener(((timestamp, duration, magnitudes, phases) -> {
+            for (int i = 0; i < magnitudes.length; i++) {
+                if (magnitudes[i] > -60 && magnitudes[i] < -50) {
+                    red.add(spawn("ArrowRed", 0, 512));
+                }
+                else if (magnitudes[i] >= -50 && magnitudes[i] < -40) {
+                    green.add(spawn("ArrowGreen", 64, 576));
+                }
+                else if (magnitudes[i] >= -40 && magnitudes[i] < -30) {
+                    blue.add(spawn("ArrowBlue",    192, 576));
+                }
+                else if (magnitudes[i] >= -30 && magnitudes[i] < -20) {
+                    yellow.add(spawn("ArrowYellow", 256, 512));
+                }
+            }
+        }));
+
+        mediaPlayer.play();
 
         run(() -> {
-            player.translateY(-20);
-        }, Duration.seconds(1));
+            for (Entity e : red) {
+                e.translateY(-20);
+            }
+
+            for (Entity e : green) {
+                e.translateY(-20);
+            }
+
+            for (Entity e : blue) {
+                e.translateY(-20);
+            }
+
+            for (Entity e : yellow) {
+                e.translateY(-20);
+            }
+        }, Duration.seconds(0.05));
     }
 
     //TODO (Minor Issue): Create switch statement for key inputs.
