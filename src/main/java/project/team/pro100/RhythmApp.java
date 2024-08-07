@@ -9,12 +9,12 @@ package project.team.pro100;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.entity.Entity;
-import javafx.scene.chart.XYChart;
 import javafx.scene.input.KeyCode;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import project.team.pro100.model.Factory;
+import project.team.pro100.view.Graphics;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -22,10 +22,12 @@ import java.util.ArrayList;
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class RhythmApp extends GameApplication {
-    int a = 0;
-    int b = 0;
-    int c = 0;
-    int d = 0;
+    private MediaPlayer mediaPlayer;
+
+    public ArrayList<Entity> red    = new ArrayList<>();
+    public ArrayList<Entity> green  = new ArrayList<>();
+    public ArrayList<Entity> blue   = new ArrayList<>();
+    public ArrayList<Entity> yellow = new ArrayList<>();
 
     public static void main(String[] args) throws Exception {
         launch(args);
@@ -39,26 +41,15 @@ public class RhythmApp extends GameApplication {
     }
 
     @Override protected void initGame() {
-        getGameWorld().addEntityFactory(new Factory());
-        spawn("ArrowBackground", 0, 0);
-
-        spawn("ArrowRed",    0,   0);
-        spawn("ArrowGreen",  64,  64);
-        spawn("ArrowBlue",   192, 64);
-        spawn("ArrowYellow", 256, 0);
-
-        ArrayList<Entity> red    = new ArrayList<>();
-        ArrayList<Entity> green  = new ArrayList<>();
-        ArrayList<Entity> blue   = new ArrayList<>();
-        ArrayList<Entity> yellow = new ArrayList<>();
+        Graphics.initGraphics();
 
         String mediaLocation = "src/main/resources/assets/music/RickRoll.wav";
         Media media = new Media(new File(mediaLocation).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer = new MediaPlayer(media);
 
         mediaPlayer.setAudioSpectrumListener(((timestamp, duration, magnitudes, phases) -> {
-            for (int i = 0; i < magnitudes.length; i++) {
-                if (magnitudes[i] > -60 && magnitudes[i] < -50) {
+            for (int i = 0; i < magnitudes.length; i+=28) {
+                if (magnitudes[i] > -59 && magnitudes[i] < -50) {
                     red.add(spawn("ArrowRed", 0, 512));
                 }
                 else if (magnitudes[i] >= -50 && magnitudes[i] < -40) {
@@ -76,22 +67,61 @@ public class RhythmApp extends GameApplication {
         mediaPlayer.play();
 
         run(() -> {
+            ArrayList<Entity> x = new ArrayList<>();
+
             for (Entity e : red) {
-                e.translateY(-20);
+                e.translateY(-10);
+                if(e.getY() < 40) {
+                    x.add(e);
+                }
+            }
+
+            for (int i = 0; i < x.size(); i++) {
+                red.remove(x.getFirst());
+                x.getFirst().removeFromWorld();
+                x.remove(x.getFirst());
             }
 
             for (Entity e : green) {
-                e.translateY(-20);
+                e.translateY(-10);
+                if(e.getY() < 120) {
+                    x.add(e);
+                }
+            }
+
+            for (int i = 0; i < x.size(); i++) {
+                green.remove(x.getFirst());
+                x.getFirst().removeFromWorld();
+                x.remove(x.getFirst());
             }
 
             for (Entity e : blue) {
-                e.translateY(-20);
+                e.translateY(-10);
+                if(e.getY() < 120) {
+                    x.add(e);
+                }
+            }
+
+            for (int i = 0; i < x.size(); i++) {
+                blue.remove(x.getFirst());
+                x.getFirst().removeFromWorld();
+                x.remove(x.getFirst());
             }
 
             for (Entity e : yellow) {
-                e.translateY(-20);
+                e.translateY(-10);
+                if(e.getY() < 40) {
+                    x.add(e);
+                }
             }
-        }, Duration.seconds(0.05));
+
+            for (int i = 0; i < x.size(); i++) {
+                yellow.remove(x.getFirst());
+                x.getFirst().removeFromWorld();
+                x.remove(x.getFirst());
+            }
+            System.out.println(red.size() + ", " + green.size() + ", " + blue.size() + ", " + yellow.size());
+        }, Duration.seconds(0.01));
     }
 
     //TODO (Minor Issue): Create switch statement for key inputs.
