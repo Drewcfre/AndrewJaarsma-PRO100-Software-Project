@@ -1,34 +1,45 @@
-package project.team.pro100; /**
+/**
  * @author ajaarsma
  * @createdOn 7/31/2024 at 5:38 PM
  * @projectName UntitledRhythmGame
  * @packageName PACKAGE_NAME;
  */
+package project.team.pro100;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import javafx.scene.input.KeyCode;
-import project.team.pro100.controller.AudioController;
-import project.team.pro100.view.Graphics;
+import javafx.util.Duration;
+import project.team.pro100.model.Factory;
 
-import static com.almasb.fxgl.dsl.FXGL.onKeyDown;
+import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class RhythmApp extends GameApplication {
     public static void main(String[] args) throws Exception {
         launch(args);
     }
 
-    //TODO (Minor issue): Have initSettings() read config file to resize screen.
     @Override protected void initSettings(GameSettings gameSettings) {
         gameSettings.setWidth(512);
         gameSettings.setHeight(512);
         gameSettings.setTitle("Untitled Rhythm Game");
-        gameSettings.setVersion("v0.1"); //TODO (Minor issue): Remove when done with project.
+        gameSettings.setVersion("v0.1");
     }
 
     @Override protected void initGame() {
-        Graphics.drawMainMenu();
-        // Focus on game logic for week 1.
+        getGameWorld().addEntityFactory(new Factory());
+        spawn("ArrowBackground", 0, 0);
+
+        spawn("ArrowRed",    0,   0);
+        spawn("ArrowGreen",  64,  64);
+        spawn("ArrowBlue",   192, 64);
+        spawn("ArrowYellow", 256, 0);
+
+        var player = spawn("ArrowGreen", 230, 300);
+
+        run(() -> {
+            player.translateY(-20);
+        }, Duration.seconds(1));
     }
 
     //TODO (Minor Issue): Create switch statement for key inputs.

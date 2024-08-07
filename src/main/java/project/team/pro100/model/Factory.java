@@ -6,19 +6,44 @@
  */
 package project.team.pro100.model;
 
-import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
-import javafx.geometry.Point2D;
 
-public class Factory {
-    @Spawns("Object") public Entity newObject(SpawnData data) {
-        return FXGL.entityBuilder(data)
-                .view("arrow.png")
-                .with(new ProjectileComponent(new Point2D(1,0), 50))
+import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
+
+public class Factory implements EntityFactory {
+    @Spawns("ArrowBackground") public Entity newArrowBackground(SpawnData data) {
+        return entityBuilder(data)
+                .view("ArrowBackground.png")
                 .build();
     }
-    // Objects such as arrows, cover art, or fonts will have blueprints here.
+
+    @Spawns("ArrowRed") public Entity newArrowRed(SpawnData data) {
+        return entityBuilder(data)
+                .view("ArrowRed.png")
+                .build();
+    }
+
+    @Spawns("ArrowGreen") public Entity newArrowGreen(SpawnData data) {
+        return entityBuilder(data)
+                .view("ArrowGreen.png")
+                .rotate(270)
+                .build();
+    }
+
+    @Spawns("ArrowBlue") public Entity newArrowBlue(SpawnData data) {
+        return entityBuilder(data)
+                .view("ArrowBlue.png")
+                .rotate(180)
+                .build();
+    }
+
+    @Spawns("ArrowYellow") public Entity newArrowYellow(SpawnData data) {
+        return entityBuilder(data)
+                .view("ArrowYellow.png")
+                .rotate(90)
+                .build();
+    }
 }
