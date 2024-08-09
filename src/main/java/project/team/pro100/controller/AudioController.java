@@ -9,38 +9,38 @@ import java.io.File;
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
 public class AudioController {
-    private MediaPlayer mediaPlayer;
-    public MediaPlayer getMediaPlayer() {
-        return mediaPlayer;
-    }
+    private MediaPlayer soundValueOutput;
+    private MediaPlayer playAudio;
 
-    public void initAudioController(String mediaLocation, int delayInMilliseconds, boolean hasListener, boolean isMuted)
+    public void initAudioController(String mediaLocation, int delayInMilliseconds, boolean hasListener)
             throws InterruptedException {
         Media media = new Media(new File(mediaLocation).toURI().toString());
-        mediaPlayer = new MediaPlayer(media);
+        soundValueOutput = new MediaPlayer(media);
+        playAudio = new MediaPlayer(media);
 
         //wait(delayInMilliseconds);
 
         if(hasListener) {
-            mediaPlayer.setAudioSpectrumListener(((timestamp, duration, magnitudes, phases) -> {
+            soundValueOutput.setAudioSpectrumListener(((timestamp, duration, magnitudes, phases) -> {
                 for (int i = 0; i < magnitudes.length; i+=70) {
-                    if (magnitudes[i] > -59 && magnitudes[i] < -50) {
+                    if (magnitudes[i] > -59.5 && magnitudes[i] < -54) {
                         RhythmApp.getList(0).add(spawn("ArrowRed", 0, 512));
                     }
-                    else if (magnitudes[i] >= -50 && magnitudes[i] < -40) {
+                    else if (magnitudes[i] >= -52 && magnitudes[i] < -48) {
                         RhythmApp.getList(1).add(spawn("ArrowGreen", 64, 576));
                     }
-                    else if (magnitudes[i] >= -40 && magnitudes[i] < -30) {
+                    else if (magnitudes[i] >= -46 && magnitudes[i] < -43) {
                         RhythmApp.getList(2).add(spawn("ArrowBlue",    192, 576));
                     }
-                    else if (magnitudes[i] >= -30 && magnitudes[i] < -20) {
+                    else if (magnitudes[i] >= -39 && magnitudes[i] < -38) {
                         RhythmApp.getList(3).add(spawn("ArrowYellow", 256, 512));
                     }
                 }
             }));
         }
 
-        mediaPlayer.play();
-        mediaPlayer.setMute(isMuted);
+        soundValueOutput.setMute(true);
+        soundValueOutput.play();
+        playAudio.play();
     }
 }
