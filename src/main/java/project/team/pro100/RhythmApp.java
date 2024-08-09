@@ -49,7 +49,7 @@ public class RhythmApp extends GameApplication {
     }
 
     @Override protected void initSettings(GameSettings gameSettings) {
-//        gameSettings.setMainMenuEnabled(true);
+        gameSettings.setMainMenuEnabled(true);
         gameSettings.setWidth(512);
         gameSettings.setHeight(512);
         gameSettings.setTitle("Untitled Rhythm Game");
