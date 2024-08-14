@@ -45,6 +45,11 @@ public class Factory implements EntityFactory {
                 .rotate(90)
                 .build();
     }
+    @Spawns("ArrowPreload") public Entity newArrowPreload(SpawnData data){
+        return entityBuilder(data)
+                .view("ArrowRed.png")
+                .build();
+    }
 
 
     //endregion

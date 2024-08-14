@@ -1,5 +1,6 @@
 package project.team.pro100.controller;
 
+import com.almasb.fxgl.dsl.FXGL;
 import javafx.animation.PauseTransition;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -22,7 +23,6 @@ public class AudioController {
         playAudio = new MediaPlayer(media);
 
         //wait(delayInMilliseconds);
-
         if(hasListener) {
             soundValueOutput.setAudioSpectrumListener(((timestamp, duration, magnitudes, phases) -> {
                 for (int i = 0; i < magnitudes.length; i+=50) {
@@ -44,7 +44,7 @@ public class AudioController {
 
         soundValueOutput.play();
 
-        PauseTransition pause = new PauseTransition(Duration.millis(1650));
+        PauseTransition pause = new PauseTransition(Duration.millis(delayInMilliseconds));
         pause.setOnFinished(e -> {
             playAudio.play();
         });
