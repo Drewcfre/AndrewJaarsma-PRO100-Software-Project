@@ -29,13 +29,13 @@ public class AudioController {
                     if (magnitudes[i] > -58 && magnitudes[i] < -57) {
                         RhythmApp.getList(0).add(spawn("ArrowRed", 0, 512));
                     }
-                    else if (magnitudes[i] >= -48 && magnitudes[i] < -44) {
+                    else if (magnitudes[i] >= -48 && magnitudes[i] < -45) {
                         RhythmApp.getList(1).add(spawn("ArrowGreen", 64, 576));
                     }
-                    else if (magnitudes[i] >= -38 && magnitudes[i] < -36) {
+                    else if (magnitudes[i] >= -37 && magnitudes[i] < -36) {
                         RhythmApp.getList(2).add(spawn("ArrowBlue",    192, 576));
                     }
-                    else if (magnitudes[i] >= -28 && magnitudes[i] < -24) {
+                    else if (magnitudes[i] >= -28 && magnitudes[i] < -25) {
                         RhythmApp.getList(3).add(spawn("ArrowYellow", 256, 512));
                     }
                 }

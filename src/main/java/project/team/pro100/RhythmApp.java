@@ -75,7 +75,7 @@ public class RhythmApp extends GameApplication {
 
         pause.setOnFinished(x -> {
         try {
-            audioControllerPlayMusic.initAudioController("src/main/resources/assets/music/RickRoll.wav", 750, true);
+            audioControllerPlayMusic.initAudioController("src/main/resources/assets/music/RickRoll.wav", 1450, true);
         }
         catch (InterruptedException e) {
             throw new RuntimeException(e);
@@ -93,8 +93,8 @@ public class RhythmApp extends GameApplication {
 
     @Override protected void onUpdate(double tpf) {
         for (int i = 0; i < 4; i++) {
-            if (RhythmApp.getList(i) != null && !RhythmApp.getList(i).isEmpty()) {
-                for (Entity arrow : RhythmApp.getList(i)) {
+            if (getList(i) != null && !getList(i).isEmpty()) {
+                for (Entity arrow : getList(i)) {
                     arrow.translateY(-2);
                 }
             }

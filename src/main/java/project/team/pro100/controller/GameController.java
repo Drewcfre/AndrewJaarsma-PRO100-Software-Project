@@ -73,9 +73,7 @@ public class GameController {
                     }
                 }
 
-                int num = oldArrows.size();
-
-                for (int j = 0; j < num - 1; j++) {
+                for (int j = 0; j < oldArrows.size() - 1; j++) {
                     RhythmApp.removeArrow(j, oldArrows.getFirst());
                     oldArrows.getFirst().removeFromWorld();
                     oldArrows.remove(oldArrows.getFirst());
