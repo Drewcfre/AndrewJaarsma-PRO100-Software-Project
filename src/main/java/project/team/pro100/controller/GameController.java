@@ -67,7 +67,7 @@ public class GameController {
 
             if(RhythmApp.getList(i) != null && !RhythmApp.getList(i).isEmpty()) {
                 for (Entity arrow : RhythmApp.getList(i)) {
-                    arrow.translateY(-speed);
+//                    arrow.translateY(-speed);
                     if (arrow.getY() < removeHeight) {
                         oldArrows.add(arrow);
                     }
