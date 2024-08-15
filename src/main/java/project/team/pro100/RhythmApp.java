@@ -75,7 +75,7 @@ public class RhythmApp extends GameApplication {
 
         pause.setOnFinished(x -> {
         try {
-            audioControllerPlayMusic.initAudioController("src/main/resources/assets/music/RickRoll.wav", 1450, true);
+            audioControllerPlayMusic.initAudioController("src/main/resources/assets/music/sugar.mp3", 1450, true);
         }
         catch (InterruptedException e) {
             throw new RuntimeException(e);

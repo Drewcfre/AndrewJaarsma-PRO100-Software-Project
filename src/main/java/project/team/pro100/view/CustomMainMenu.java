@@ -10,17 +10,30 @@ import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
 import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.io.FileInputStream;
 
 public class CustomMainMenu extends FXGLMenu{
     public CustomMainMenu(MenuType type) {
         super(type);
 
+        Image image = null;
+
+        try {
+            FileInputStream input = new FileInputStream("src/main/resources/assets/textures/wasp.gif");
+            image = new Image(input);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,BackgroundSize.DEFAULT);
+        Background background = new Background(backgroundImage);
         Text title = FXGL.getUIFactoryService().newText("Untitled Rhythm Game", Color.BLACK, 40.0);
         FileChooser fileChooser = new FileChooser();
         Button startButton = new Button("Start Game");
@@ -29,6 +42,7 @@ public class CustomMainMenu extends FXGLMenu{
         VBox menuBox = new VBox(10, title, startButton, browseFilesButton);
         menuBox.setTranslateX(getAppWidth() / 2.0 - 225);
         menuBox.setTranslateY(getAppHeight() / 2.0 - 50);
+        menuBox.setBackground(background);
 
         startButton.setOnAction(e -> fireNewGame());
 
