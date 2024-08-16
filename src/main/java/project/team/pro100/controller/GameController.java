@@ -79,15 +79,13 @@ public class GameController {
 
             if(RhythmApp.getList(i) != null && !RhythmApp.getList(i).isEmpty()) {
                 for (Entity arrow : RhythmApp.getList(i)) {
-                    arrow.translateY(-speed);
+//                    arrow.translateY(-speed);
                     if (arrow.getY() < removeHeight) {
                         oldArrows.add(arrow);
                     }
                 }
 
-                int num = oldArrows.size();
-
-                for (int j = 0; j < num - 1; j++) {
+                for (int j = 0; j < oldArrows.size() - 1; j++) {
                     RhythmApp.removeArrow(j, oldArrows.getFirst());
                     oldArrows.getFirst().removeFromWorld();
                     oldArrows.remove(oldArrows.getFirst());
