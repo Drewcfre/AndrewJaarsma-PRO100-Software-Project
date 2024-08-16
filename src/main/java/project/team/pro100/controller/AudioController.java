@@ -1,78 +1,58 @@
 package project.team.pro100.controller;
 
-
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
+import com.almasb.fxgl.dsl.FXGL;
+import javafx.animation.PauseTransition;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.Stage;
+import javafx.util.Duration;
+import project.team.pro100.RhythmApp;
 
 import java.io.File;
 
-public class AudioController extends Application {
-    int a = 0;
-    int b = 0;
-    int c = 0;
-    int d = 0;
+import static com.almasb.fxgl.dsl.FXGL.spawn;
 
-@Override
-    public void start(Stage stage) throws Exception {
-        String mediaLocation = "src/main/resources/assets/music/RickRoll.wav";
+public class AudioController {
+    private MediaPlayer soundValueOutput;
+    private MediaPlayer playAudio;
+
+    public void initAudioController(String mediaLocation, int delayInMilliseconds, boolean hasListener)
+            throws InterruptedException {
         Media media = new Media(new File(mediaLocation).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        soundValueOutput = new MediaPlayer(media);
+        soundValueOutput.setMute(true);
+        playAudio = new MediaPlayer(media);
 
-        NumberAxis xAxis = new NumberAxis(0,75,5);
-        NumberAxis yAxis = new NumberAxis(0, 50, 5);
-        LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
-        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        lineChart.getData().add(series);
-        Scene scene = new Scene(lineChart, 800, 600);
-        stage.setScene(scene);
-        stage.show();
-        mediaPlayer.setAudioSpectrumListener(((timestamp, duration, magnitudes, phases) -> {
-            series.getData().clear();
-            for (int i = 0; i < magnitudes.length; i++) {
-                series.getData().add(new XYChart.Data<>(i+1, magnitudes[i]+60));
-//                System.out.println(magnitudes[i]);
-                if (magnitudes[i] > -60 && magnitudes[i] < -50) {
-                    if (a >= 1) {
-                        System.out.print("A");
-                    } else System.out.print("\nA");
-                    a++;
-                    b=0;
-                    c=0;
-                    d=0;
-                } else if (magnitudes[i] >= -50 && magnitudes[i] < -40) {
-                    if (b >= 1) {
-                        System.out.print("B");
-                    } else System.out.print("\nB");
-                    b++;
-                    a=0;
-                    c=0;
-                    d=0;
-                } else if (magnitudes[i] >= -40 && magnitudes[i] < -30) {
-                    if (c >= 1) {
-                        System.out.print("C");
-                    } else System.out.print("\nC");
-                    c++;
-                    b=0;
-                    a=0;
-                    d=0;
-                } else if (magnitudes[i] >= -30 && magnitudes[i] < -20) {
-                    if (d >= 1) {
-                        System.out.print("D");
-                    } else System.out.print("\nD");
-                    d++;
-                    b=0;
-                    c=0;
-                    a=0;
+        //wait(delayInMilliseconds);
+        if(hasListener) {
+            soundValueOutput.setAudioSpectrumListener(((timestamp, duration, magnitudes, phases) -> {
+                float[] soundValues =  magnitudes;
+                for (int i = 0; i < magnitudes.length; i+=50) {
+                    if ((int) soundValues[i] == -57) {
+                        RhythmApp.getList(0).add(spawn("ArrowRed", 0, 512));
+                    }
+                    else if ((int)soundValues[i] >= -50 && (int)soundValues[i] <= -47) {
+                        RhythmApp.getList(1).add(spawn("ArrowGreen", 64, 576));
+                    }
+                    else if ((int)soundValues[i] >= -31 && (int)soundValues[i] <= -32) {
+                        RhythmApp.getList(2).add(spawn("ArrowBlue",    192, 576));
+                    }
+                    else if ((int) soundValues[i] == -26) {
+                        RhythmApp.getList(3).add(spawn("ArrowYellow", 256, 512));
+                    }
+//                    if ((int) soundValues[i] >= -30 && (int)soundValues[i] < -20) {
+//                        System.out.println((int)soundValues[i]);
+//                    }
                 }
-            }
-        }));
+            }));
+        }
 
-        mediaPlayer.play();
+        soundValueOutput.play();
+
+        PauseTransition pause = new PauseTransition(Duration.millis(delayInMilliseconds));
+        pause.setOnFinished(e -> {
+            playAudio.play();
+        });
+        pause.play();
+
     }
 }

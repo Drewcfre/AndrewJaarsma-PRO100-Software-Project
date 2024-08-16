@@ -8,137 +8,99 @@ package project.team.pro100;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.app.scene.FXGLMenu;
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import javafx.scene.chart.XYChart;
-import javafx.scene.input.KeyCode;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+import javafx.animation.PauseTransition;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
+import project.team.pro100.controller.AudioController;
+import project.team.pro100.controller.GameController;
 import project.team.pro100.model.Factory;
+import project.team.pro100.view.CustomMainMenu;
+import project.team.pro100.view.SceneFactory;
 
-import java.io.File;
 import java.util.ArrayList;
+import java.util.stream.Stream;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class RhythmApp extends GameApplication {
-    int a = 0;
-    int b = 0;
-    int c = 0;
-    int d = 0;
+    //region Constants (Click To Expand)
+    private final AudioController audioControllerGenerateArrows = new AudioController();
+    private final AudioController audioControllerPlayMusic = new AudioController();
+    //endregion
+
+    //region Variables/Getters/Setters (Click To Expand)
+    private static final ArrayList[] arrows = Stream.generate(
+            () -> new ArrayList()
+    ).limit(4).toArray(ArrayList[]::new);
+    public static ArrayList<Entity> getList(int type) {
+        return arrows[type];
+    }
+    public static void removeArrow(int type, Entity entity) {
+        arrows[type].remove(entity);
+    }
+    //endregion
+
 
     public static void main(String[] args) throws Exception {
         launch(args);
     }
 
     @Override protected void initSettings(GameSettings gameSettings) {
+        gameSettings.setMainMenuEnabled(true);
         gameSettings.setWidth(512);
         gameSettings.setHeight(512);
         gameSettings.setTitle("Untitled Rhythm Game");
         gameSettings.setVersion("v0.1");
+        gameSettings.setSceneFactory(new SceneFactory());
     }
 
     @Override protected void initGame() {
-        getGameWorld().addEntityFactory(new Factory());
-        spawn("ArrowBackground", 0, 0);
-
-        spawn("ArrowRed",    0,   0);
-        spawn("ArrowGreen",  64,  64);
-        spawn("ArrowBlue",   192, 64);
-        spawn("ArrowYellow", 256, 0);
-
-        ArrayList<Entity> red    = new ArrayList<>();
-        ArrayList<Entity> green  = new ArrayList<>();
-        ArrayList<Entity> blue   = new ArrayList<>();
-        ArrayList<Entity> yellow = new ArrayList<>();
-
-        String mediaLocation = "src/main/resources/assets/music/RickRoll.wav";
-        Media media = new Media(new File(mediaLocation).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-
-        mediaPlayer.setAudioSpectrumListener(((timestamp, duration, magnitudes, phases) -> {
-            for (int i = 0; i < magnitudes.length; i++) {
-                if (magnitudes[i] > -60 && magnitudes[i] < -50) {
-                    red.add(spawn("ArrowRed", 0, 512));
-                }
-                else if (magnitudes[i] >= -50 && magnitudes[i] < -40) {
-                    green.add(spawn("ArrowGreen", 64, 576));
-                }
-                else if (magnitudes[i] >= -40 && magnitudes[i] < -30) {
-                    blue.add(spawn("ArrowBlue",    192, 576));
-                }
-                else if (magnitudes[i] >= -30 && magnitudes[i] < -20) {
-                    yellow.add(spawn("ArrowYellow", 256, 512));
-                }
-            }
-        }));
-
-        mediaPlayer.play();
+        Factory.initGraphics();
+        PauseTransition pause = new PauseTransition(Duration.seconds(1));
 
         run(() -> {
-            for (Entity e : red) {
-                e.translateY(-20);
-            }
 
-            for (Entity e : green) {
-                e.translateY(-20);
-            }
+            GameController.updateArrows(5, -40);
 
-            for (Entity e : blue) {
-                e.translateY(-20);
-            }
+            for (ArrayList arrow : arrows) System.out.print(arrow.size() + ", ");
+            System.out.println();
+        }, Duration.seconds(0.01));
 
-            for (Entity e : yellow) {
-                e.translateY(-20);
-            }
-        }, Duration.seconds(0.05));
+        pause.setOnFinished(x -> {
+        try {
+            audioControllerPlayMusic.initAudioController("src/main/resources/assets/music/sugar.mp3", 1450, true);
+        }
+        catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        });
+        pause.play();
     }
 
+
     //TODO (Minor Issue): Create switch statement for key inputs.
-    //TODO (Minor Issue): Create more descriptive comments describing what key inputs do.
+    //TODO (Minor Issue): Create comments describing what key inputs do.
     @Override protected void initInput() {
-        onKeyDown(KeyCode.W, () -> {
-            System.out.println("W");
-        });
-        onKeyDown(KeyCode.UP, () -> {
-            System.out.println("UP");
-        });
+        GameController.userInput();
+    }
 
-        onKeyDown(KeyCode.A, () -> {
-            System.out.println("A");
-        });
-        onKeyDown(KeyCode.LEFT, () -> {
-            System.out.println("LEFT");
-        });
+    @Override protected void onUpdate(double tpf) {
+        for (int i = 0; i < 4; i++) {
+            if (getList(i) != null && !getList(i).isEmpty()) {
+                for (Entity arrow : getList(i)) {
+                    arrow.translateY(-2);
+                }
+            }
+        }
 
-        onKeyDown(KeyCode.S, () -> {
-            System.out.println("S");
-        });
-        onKeyDown(KeyCode.DOWN, () -> {
-            System.out.println("DOWN");
-        });
-
-        onKeyDown(KeyCode.D, () -> {
-            System.out.println("D");
-        });
-        onKeyDown(KeyCode.RIGHT, () -> {
-            System.out.println("RIGHT");
-        });
-
-        // Select.
-        onKeyDown(KeyCode.SPACE, () -> {
-            System.out.println("SPACE");
-        });
-        onKeyDown(KeyCode.ENTER, () -> {
-            System.out.println("ENTER");
-        });
-
-        // Go back; open the pause menu.
-        onKeyDown(KeyCode.BACK_SPACE, () -> {
-            System.out.println("BACK_SPACE");
-        });
-        onKeyDown(KeyCode.ESCAPE, () -> {
-            System.out.println("ESCAPE");
-        });
+//        Entity preloadArrow = spawn("ArrowPreload", 0, 512);
+//        preloadArrow.translateY(-5*tpf);
     }
 }

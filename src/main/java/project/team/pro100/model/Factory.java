@@ -11,39 +11,59 @@ import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
 
+import static com.almasb.fxgl.dsl.FXGL.getGameWorld;
+import static com.almasb.fxgl.dsl.FXGL.spawn;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public class Factory implements EntityFactory {
+    //region Entity Spawns (Click to Expand)
     @Spawns("ArrowBackground") public Entity newArrowBackground(SpawnData data) {
         return entityBuilder(data)
                 .view("ArrowBackground.png")
                 .build();
     }
-
     @Spawns("ArrowRed") public Entity newArrowRed(SpawnData data) {
         return entityBuilder(data)
                 .view("ArrowRed.png")
                 .build();
     }
-
     @Spawns("ArrowGreen") public Entity newArrowGreen(SpawnData data) {
         return entityBuilder(data)
                 .view("ArrowGreen.png")
                 .rotate(270)
                 .build();
     }
-
     @Spawns("ArrowBlue") public Entity newArrowBlue(SpawnData data) {
         return entityBuilder(data)
                 .view("ArrowBlue.png")
                 .rotate(180)
                 .build();
     }
-
     @Spawns("ArrowYellow") public Entity newArrowYellow(SpawnData data) {
         return entityBuilder(data)
                 .view("ArrowYellow.png")
                 .rotate(90)
                 .build();
     }
+    @Spawns("ArrowPreload") public Entity newArrowPreload(SpawnData data){
+        return entityBuilder(data)
+                .view("ArrowRed.png")
+                .build();
+    }
+
+
+    //endregion
+
+    //region Graphics Methods (Click To Expand)
+    public static void initGraphics() {
+        getGameWorld().addEntityFactory(new Factory());
+
+        spawn("ArrowBackground", 0, 0);
+
+        spawn("ArrowRed",    0,   0);
+        spawn("ArrowGreen",  64,  64);
+        spawn("ArrowBlue",   192, 64);
+        spawn("ArrowYellow", 256, 0);
+    }
+    //endregion
 }
