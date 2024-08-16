@@ -15,25 +15,18 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class CustomMainMenu extends FXGLMenu{
+    //region Methods (Click To Expand)
     public CustomMainMenu(MenuType type) {
         super(type);
 
-        Image image = null;
-
-        try {
-            FileInputStream input = new FileInputStream("src/main/resources/assets/textures/wasp.gif");
-            image = new Image(input);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,BackgroundSize.DEFAULT);
-        Background background = new Background(backgroundImage);
+        Background background = getBackground();
         Text title = FXGL.getUIFactoryService().newText("Untitled Rhythm Game", Color.BLACK, 40.0);
         FileChooser fileChooser = new FileChooser();
         Button startButton = new Button("Start Game");
@@ -52,4 +45,19 @@ public class CustomMainMenu extends FXGLMenu{
 
         getContentRoot().getChildren().add(menuBox);
     }
+
+    @NotNull private static Background getBackground() {
+        Image image;
+
+        try {
+            FileInputStream input = new FileInputStream("src/main/resources/assets/textures/wasp.gif");
+            image = new Image(input);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,BackgroundSize.DEFAULT);
+        return new Background(backgroundImage);
+    }
+    //endregion
 }

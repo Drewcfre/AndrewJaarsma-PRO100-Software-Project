@@ -6,10 +6,12 @@
  */
 package project.team.pro100.model;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
+import javafx.scene.text.Text;
 
 import static com.almasb.fxgl.dsl.FXGL.getGameWorld;
 import static com.almasb.fxgl.dsl.FXGL.spawn;
@@ -17,11 +19,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public class Factory implements EntityFactory {
     //region Entity Spawns (Click to Expand)
-    @Spawns("ArrowBackground") public Entity newArrowBackground(SpawnData data) {
-        return entityBuilder(data)
-                .view("ArrowBackground.png")
-                .build();
-    }
+    //TODO: IntelliJ is saying that these method are not being used. Don't know what that is about.
     @Spawns("ArrowRed") public Entity newArrowRed(SpawnData data) {
         return entityBuilder(data)
                 .view("ArrowRed.png")
@@ -73,16 +71,49 @@ public class Factory implements EntityFactory {
     }
     //endregion
 
+    //region Variables/Getters/Setters (Click To Expand)
+    private static Text score;
+    public static void setScoreCount(int text) {
+        score.setText("Score: " + text);
+    }
+
+    private static Text misses;
+    public static void setMissCount(int num) {
+        misses.setText("Misses: " + num);
+    }
+    //endregion
+
     //region Graphics Methods (Click To Expand)
     public static void initGraphics() {
         getGameWorld().addEntityFactory(new Factory());
 
-        spawn("ArrowBackground", 0, 0);
+        FXGL.getGameWorld().addEntity(FXGL.entityBuilder()
+                .at(0, 0)
+                .view("ArrowBackground.png")
+                .buildAndAttach());
 
         spawn("ArrowRed",    0,   0);
         spawn("ArrowGreen",  64,  64);
         spawn("ArrowBlue",   192, 64);
         spawn("ArrowYellow", 256, 0);
+
+        score = new Text();
+        score.setText("Score: 0");
+        score.setTranslateX(260);
+        score.setTranslateY(10);
+        score.setStyle("-fx-text-inner-color: black;");
+
+        FXGL.getGameScene().addUINode(score);
+
+        misses = new Text();
+        misses.setText("Misses: 0");
+        misses.setTranslateX(260);
+        misses.setTranslateY(30);
+        misses.setStyle("-fx-text-inner-color: black;");
+
+        FXGL.getGameScene().addUINode(misses);
+
+        //TODO: Add background for the right side of the window and the player character.
     }
     //endregion
 }
