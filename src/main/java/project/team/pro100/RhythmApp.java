@@ -35,6 +35,15 @@ public class RhythmApp extends GameApplication {
     public static void removeArrow(int type, Entity entity) {
         arrows[type].remove(entity);
     }
+
+    private static Entity message = null;
+    public static Entity getMessage() {
+        return message;
+    }
+
+    public static void setMessage(Entity newMessage) {
+        message = newMessage;
+    }
     //endregion
 
 

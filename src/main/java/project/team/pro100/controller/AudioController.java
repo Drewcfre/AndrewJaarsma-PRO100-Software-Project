@@ -19,7 +19,11 @@ public class AudioController {
         Media media = new Media(new File(mediaLocation).toURI().toString());
         mediaPlayer = new MediaPlayer(media);
 
-        //wait(delayInMilliseconds);
+//        try {
+//            wait(delayInMilliseconds);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
         if(hasListener) {
             mediaPlayer.setAudioSpectrumListener(((timestamp, duration, magnitudes, phases) -> {

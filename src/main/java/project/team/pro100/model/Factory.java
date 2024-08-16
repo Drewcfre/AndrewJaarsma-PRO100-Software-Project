@@ -46,7 +46,26 @@ public class Factory implements EntityFactory {
                 .build();
     }
 
-
+    @Spawns("Terrible") public Entity newTerrible(SpawnData data) {
+        return entityBuilder(data)
+                .view("Terrible.png")
+                .build();
+    }
+    @Spawns("Okay") public Entity newOkay(SpawnData data) {
+        return entityBuilder(data)
+                .view("Okay.png")
+                .build();
+    }
+    @Spawns("Good") public Entity newGood(SpawnData data) {
+        return entityBuilder(data)
+                .view("Good.png")
+                .build();
+    }
+    @Spawns("Perfect") public Entity newPerfect(SpawnData data) {
+        return entityBuilder(data)
+                .view("Perfect.png")
+                .build();
+    }
     //endregion
 
     //region Graphics Methods (Click To Expand)
