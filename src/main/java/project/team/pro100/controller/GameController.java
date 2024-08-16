@@ -47,30 +47,30 @@ public class GameController {
     }
 
     private static void arrowHit(int arrowType) {
-        if(RhythmApp.getMessage() != null) {
-            RhythmApp.getMessage().removeFromWorld();
-        }
-
-        int offset = switch (arrowType) {
-            case 0, 3 -> 0;
-            case 1, 2 -> 64;
-            default -> throw new IllegalStateException("Unexpected value: " + arrowType);
-        };
-
-        Entity arrow = RhythmApp.getList(arrowType).getFirst();
-
-        if(arrow.getY() < offset + 10 && arrow.getY() > offset - 10) {
-            RhythmApp.setMessage(spawn("Perfect", 300, 300));
-        }
-        else if(arrow.getY() < offset + 30) {
-            RhythmApp.setMessage(spawn("Good", 300, 300));
-        }
-        else if(arrow.getY() < offset + 50) {
-            RhythmApp.setMessage(spawn("Okay", 300, 300));
-        }
-        else {
-            RhythmApp.setMessage(spawn("Terrible", 300, 300));
-        }
+//        if(RhythmApp.getMessage() != null) {
+//            RhythmApp.getMessage().removeFromWorld();
+//        }
+//
+//        int offset = switch (arrowType) {
+//            case 0, 3 -> 0;
+//            case 1, 2 -> 64;
+//            default -> throw new IllegalStateException("Unexpected value: " + arrowType);
+//        };
+//
+//        Entity arrow = RhythmApp.getList(arrowType).getFirst();
+//
+//        if(arrow.getY() < offset + 10 && arrow.getY() > offset - 10) {
+//            RhythmApp.setMessage(spawn("Perfect", 300, 300));
+//        }
+//        else if(arrow.getY() < offset + 30) {
+//            RhythmApp.setMessage(spawn("Good", 300, 300));
+//        }
+//        else if(arrow.getY() < offset + 50) {
+//            RhythmApp.setMessage(spawn("Okay", 300, 300));
+//        }
+//        else {
+//            RhythmApp.setMessage(spawn("Terrible", 300, 300));
+//        }
     }
 
     public static void updateArrows(int speed, int removeHeight) {
