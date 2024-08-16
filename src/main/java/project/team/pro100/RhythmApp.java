@@ -8,20 +8,12 @@ package project.team.pro100;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
-import com.almasb.fxgl.app.scene.FXGLMenu;
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import javafx.animation.PauseTransition;
-import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.util.Duration;
 import project.team.pro100.controller.AudioController;
 import project.team.pro100.controller.GameController;
 import project.team.pro100.model.Factory;
-import project.team.pro100.view.CustomMainMenu;
 import project.team.pro100.view.SceneFactory;
 
 import java.util.ArrayList;
@@ -75,7 +67,7 @@ public class RhythmApp extends GameApplication {
 
         pause.setOnFinished(x -> {
         try {
-            audioControllerPlayMusic.initAudioController("src/main/resources/assets/music/sugar.mp3", 1450, true);
+            audioControllerPlayMusic.initAudioController("src/main/resources/assets/music/RickRoll.wav", 1450, true);
         }
         catch (InterruptedException e) {
             throw new RuntimeException(e);

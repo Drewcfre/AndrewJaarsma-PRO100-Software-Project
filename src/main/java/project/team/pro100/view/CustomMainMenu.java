@@ -9,6 +9,7 @@ package project.team.pro100.view;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
@@ -22,27 +23,47 @@ import java.io.FileInputStream;
 public class CustomMainMenu extends FXGLMenu{
     public CustomMainMenu(MenuType type) {
         super(type);
-
+        FileChooser fileChooser = new FileChooser();
         Image image = null;
 
+
         try {
-            FileInputStream input = new FileInputStream("src/main/resources/assets/textures/wasp.gif");
+            FileInputStream input = new FileInputStream("src/main/resources/assets/textures/mainBackground.png");
             image = new Image(input);
         }catch (Exception e){
             e.printStackTrace();
         }
 
-        BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,BackgroundSize.DEFAULT);
+        BackgroundSize backgroundSize = new BackgroundSize(100,
+                100,
+                true,
+                true,
+                true,
+                false
+        );
+
+        BackgroundImage backgroundImage = new BackgroundImage(image,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                backgroundSize);
+
         Background background = new Background(backgroundImage);
+
+        Pane rootPane = new Pane();
+        rootPane.setPrefSize(getAppWidth(),getAppHeight());
+        rootPane.setBackground(background);
+
         Text title = FXGL.getUIFactoryService().newText("Untitled Rhythm Game", Color.BLACK, 40.0);
-        FileChooser fileChooser = new FileChooser();
         Button startButton = new Button("Start Game");
         Button browseFilesButton = new Button("Search For Songs");
 
-        VBox menuBox = new VBox(10, title, startButton, browseFilesButton);
+        VBox buttonBox = new VBox(10, startButton, browseFilesButton);
+        buttonBox.setAlignment(Pos.CENTER);
+
+        VBox menuBox = new VBox(10, title, buttonBox);
         menuBox.setTranslateX(getAppWidth() / 2.0 - 225);
         menuBox.setTranslateY(getAppHeight() / 2.0 - 50);
-        menuBox.setBackground(background);
 
         startButton.setOnAction(e -> fireNewGame());
 
@@ -50,6 +71,8 @@ public class CustomMainMenu extends FXGLMenu{
             File file = fileChooser.showOpenDialog(null);
         });
 
-        getContentRoot().getChildren().add(menuBox);
+        rootPane.getChildren().addAll(menuBox);
+
+        getContentRoot().getChildren().add(rootPane);
     }
 }
