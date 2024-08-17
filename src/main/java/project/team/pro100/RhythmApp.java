@@ -61,8 +61,8 @@ public class RhythmApp extends GameApplication {
 
             GameController.updateArrows(5, -40);
 
-            for (ArrayList arrow : arrows) System.out.print(arrow.size() + ", ");
-            System.out.println();
+//            for (ArrayList arrow : arrows) System.out.print(arrow.size() + ", ");
+//            System.out.println();
         }, Duration.seconds(0.01));
 
         pause.setOnFinished(x -> {
