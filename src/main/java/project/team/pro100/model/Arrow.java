@@ -4,6 +4,7 @@
  * @projectName AndrewJaarsma-PRO100-Software-Project
  * @packageName project.team.pro100.model;
  */
+
 package project.team.pro100.model;
 
 import com.almasb.fxgl.entity.Entity;
@@ -20,9 +21,9 @@ public class Arrow {
     }
 
     private boolean isUsed;
-    //TODO: May want to invert the isUsed() method in the future.
-    public boolean isUsed() {
-        return isUsed;
+    // The get function here is inverted, as there is no instance where the returned value isn't inverted.
+    public boolean isUsedInv() {
+        return !isUsed;
     }
     public void setUsed(boolean used) {
         isUsed = used;

@@ -45,9 +45,7 @@ public class AudioController {
         soundValueOutput.play();
 
         PauseTransition pause = new PauseTransition(Duration.millis(delayInMilliseconds));
-        pause.setOnFinished(e -> {
-            playAudio.play();
-        });
+        pause.setOnFinished(e -> playAudio.play());
         pause.play();
     }
     //endregion

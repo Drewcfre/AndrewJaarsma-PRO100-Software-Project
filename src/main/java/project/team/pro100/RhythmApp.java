@@ -4,6 +4,7 @@
  * @projectName UntitledRhythmGame
  * @packageName PACKAGE_NAME;
  */
+
 package project.team.pro100;
 
 import com.almasb.fxgl.app.GameApplication;
@@ -14,11 +15,10 @@ import javafx.util.Duration;
 import project.team.pro100.controller.AudioController;
 import project.team.pro100.controller.GameController;
 import project.team.pro100.model.Arrow;
-import project.team.pro100.model.Factory;
+import project.team.pro100.model.EntityFactory;
 import project.team.pro100.view.SceneFactory;
 
 import java.util.ArrayList;
-import java.util.stream.Stream;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 
@@ -27,10 +27,9 @@ public class RhythmApp extends GameApplication {
     private final AudioController audioController = new AudioController();
 
     // A list of 4 array lists that hold the arrow objects.
-    //TODO: IntelliJ doesn't like how I initialized the array lists so I'll have to change this in the future.
-    private static final ArrayList[] arrows = Stream.generate(() -> new ArrayList()).limit(4).toArray(ArrayList[]::new);
+    private static final ArrayList<ArrayList<Arrow>> arrows = new ArrayList<>();
     public static ArrayList<Arrow> getList(int type) {
-        return arrows[type];
+        return arrows.get(type);
     }
 
     // Displays a graphic on the side of the screen that rates the accuracy of your last input.
@@ -76,13 +75,15 @@ public class RhythmApp extends GameApplication {
     }
 
     @Override protected void initGame() {
-        Factory.initGraphics();
+        for (int i = 0; i < 4; i++) arrows.add(new ArrayList<>());
+
+        EntityFactory.initGraphics();
 
         run(() -> {
             GameController.updateArrows(-40);
 
             //TODO: Arrows in the array lists are slowly increasing when they should be getting deleted.
-            for (ArrayList arrow : arrows) System.out.print(arrow.size() + ", ");
+            for (ArrayList<Arrow> arrow : arrows) System.out.print(arrow.size() + ", ");
             System.out.println();
         }, Duration.seconds(0.01));
 

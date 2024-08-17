@@ -4,6 +4,7 @@
  * @projectName AndrewJaarsma-PRO100-Software-Project
  * @packageName project.team.pro100.view;
  */
+
 package project.team.pro100.view;
 
 import com.almasb.fxgl.app.scene.FXGLMenu;
@@ -39,6 +40,7 @@ public class CustomMainMenu extends FXGLMenu{
 
         startButton.setOnAction(e -> fireNewGame());
 
+        //TODO: Finish file selection.
         browseFilesButton.setOnAction(e -> {
             File file = fileChooser.showOpenDialog(null);
         });

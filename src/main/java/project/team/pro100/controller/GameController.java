@@ -4,13 +4,14 @@
  * @projectName UntitledRhythmGame
  * @packageName controller;
  */
+
 package project.team.pro100.controller;
 
 import com.almasb.fxgl.entity.Entity;
 import javafx.scene.input.KeyCode;
 import project.team.pro100.RhythmApp;
 import project.team.pro100.model.Arrow;
-import project.team.pro100.model.Factory;
+import project.team.pro100.model.EntityFactory;
 
 import java.util.ArrayList;
 
@@ -20,23 +21,43 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
 public class GameController {
     //region Methods (Click To Expand)
     public static void userInput() {
-        onKeyDown(KeyCode.W, () -> arrowHit(0));
-        onKeyDown(KeyCode.UP, () -> arrowHit(0));
+        onKeyDown(KeyCode.W, () -> {
+            EntityFactory.setPlayer("PlayerUp.png");
+            arrowHit(0);
+        });
+        onKeyDown(KeyCode.UP, () -> {
+            EntityFactory.setPlayer("PlayerUp.png");
+            arrowHit(0);
+        });
 
-        onKeyDown(KeyCode.A, () -> arrowHit(1));
-        onKeyDown(KeyCode.LEFT, () -> arrowHit(1));
+        onKeyDown(KeyCode.A, () -> {
+            EntityFactory.setPlayer("PlayerLeft.png");
+            arrowHit(1);
+        });
+        onKeyDown(KeyCode.LEFT, () -> {
+            EntityFactory.setPlayer("PlayerLeft.png");
+            arrowHit(1);
+        });
 
-        onKeyDown(KeyCode.S, () -> arrowHit(2));
-        onKeyDown(KeyCode.DOWN, () -> arrowHit(2));
+        onKeyDown(KeyCode.S, () -> {
+            EntityFactory.setPlayer("PlayerDown.png");
+            arrowHit(2);
+        });
+        onKeyDown(KeyCode.DOWN, () -> {
+            EntityFactory.setPlayer("PlayerDown.png");
+            arrowHit(2);
+        });
 
-        onKeyDown(KeyCode.D, () -> arrowHit(3));
-        onKeyDown(KeyCode.RIGHT, () -> arrowHit(3));
+        onKeyDown(KeyCode.D, () -> {
+            EntityFactory.setPlayer("PlayerRight.png");
+            arrowHit(3);
+        });
+        onKeyDown(KeyCode.RIGHT, () -> {
+            EntityFactory.setPlayer("PlayerRight.png");
+            arrowHit(3);
+        });
 
-        // Select.
-        onKeyDown(KeyCode.SPACE, () -> System.out.println("SPACE"));
-        onKeyDown(KeyCode.ENTER, () -> System.out.println("ENTER"));
-
-        // Go back; open the pause menu.
+        // Opens the pause menu.
         onKeyDown(KeyCode.BACK_SPACE, () -> System.out.println("BACK_SPACE"));
         onKeyDown(KeyCode.ESCAPE, () -> System.out.println("ESCAPE"));
     }
@@ -45,12 +66,14 @@ public class GameController {
         int activeArrow;
 
         for (activeArrow = 0; activeArrow < RhythmApp.getList(arrowType).size(); activeArrow++) {
-            if(!RhythmApp.getList(arrowType).get(activeArrow).isUsed()) {
+            if(RhythmApp.getList(arrowType).get(activeArrow).isUsedInv()) {
                 int offset = switch (arrowType) {
                     case 0, 3 -> 0;
                     case 1, 2 -> 64;
                     default -> throw new IllegalStateException("Unexpected value: " + arrowType);
                 };
+
+                if(RhythmApp.getMessage() != null) RhythmApp.getMessage().removeFromWorld();
 
                 Entity arrow = RhythmApp.getList(arrowType).getFirst().getArrow();
 
@@ -84,7 +107,7 @@ public class GameController {
 
             if(RhythmApp.getList(i) != null && !RhythmApp.getList(i).isEmpty()) {
                 for (Arrow arrow : RhythmApp.getList(i)) {
-                    if (arrow.getArrow() != null && arrow.getArrow().getY() < removeHeight && !arrow.isUsed()) {
+                    if (arrow.getArrow() != null && arrow.getArrow().getY() < removeHeight && arrow.isUsedInv()) {
                         RhythmApp.setMisses(RhythmApp.getMisses() + 1);
                         arrow.removeArrow();
                         oldArrows.add(arrow);
@@ -97,8 +120,8 @@ public class GameController {
             }
         }
 
-        Factory.setMissCount(RhythmApp.getMisses());
-        Factory.setScoreCount(RhythmApp.getScore());
+        EntityFactory.setMissCount(RhythmApp.getMisses());
+        EntityFactory.setScoreCount(RhythmApp.getScore());
     }
     //endregion
 }

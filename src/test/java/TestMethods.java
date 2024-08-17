@@ -7,17 +7,8 @@
 
 import org.junit.jupiter.api.Test;
 
-//TODO: These are placeholder tests. Update as needed.
 public class TestMethods {
-    @Test public void testFileController() {
+    //TODO: Add unit tests.
 
-    }
-
-    @Test public void testFactory() {
-
-    }
-
-    @Test public void testGameLogic() {
-
-    }
+    @Test public void test() {}
 }

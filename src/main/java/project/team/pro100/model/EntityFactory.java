@@ -4,22 +4,24 @@
  * @projectName UntitledRhythmGame
  * @packageName model;
  */
+
 package project.team.pro100.model;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
+import com.almasb.fxgl.texture.Texture;
 import javafx.scene.text.Text;
 
 import static com.almasb.fxgl.dsl.FXGL.getGameWorld;
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
-public class Factory implements EntityFactory {
+public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
     //region Entity Spawns (Click to Expand)
-    //TODO: IntelliJ is saying that these method are not being used. Don't know what that is about.
+    // IntelliJ wrongly flags these methods as unused.
+    // Suppress the unused inspection in this file to get rid of the warnings.
     @Spawns("ArrowRed") public Entity newArrowRed(SpawnData data) {
         return entityBuilder(data)
                 .view("ArrowRed.png")
@@ -81,15 +83,27 @@ public class Factory implements EntityFactory {
     public static void setMissCount(int num) {
         misses.setText("Misses: " + num);
     }
+
+    private static Texture player;
+    public static void setPlayer(String newTexture) {
+        if(newTexture == null) throw new NullPointerException("newTexture is null");
+        else if(newTexture.isEmpty()) throw new NullPointerException("newTexture is empty");
+        else player = FXGL.getAssetLoader().loadTexture(newTexture);
+    }
     //endregion
 
     //region Graphics Methods (Click To Expand)
     public static void initGraphics() {
-        getGameWorld().addEntityFactory(new Factory());
+        getGameWorld().addEntityFactory(new EntityFactory());
 
         FXGL.getGameWorld().addEntity(FXGL.entityBuilder()
                 .at(0, 0)
                 .view("ArrowBackground.png")
+                .buildAndAttach());
+
+        FXGL.getGameWorld().addEntity(FXGL.entityBuilder()
+                .at(256, 0)
+                .view("StageBackground.png")
                 .buildAndAttach());
 
         spawn("ArrowRed",    0,   0);
@@ -101,19 +115,20 @@ public class Factory implements EntityFactory {
         score.setText("Score: 0");
         score.setTranslateX(260);
         score.setTranslateY(10);
-        score.setStyle("-fx-text-inner-color: black;");
-
+        score.setStyle("-fx-fill: white;");
         FXGL.getGameScene().addUINode(score);
 
         misses = new Text();
         misses.setText("Misses: 0");
         misses.setTranslateX(260);
         misses.setTranslateY(30);
-        misses.setStyle("-fx-text-inner-color: black;");
-
+        misses.setStyle("-fx-fill: white;");
         FXGL.getGameScene().addUINode(misses);
 
-        //TODO: Add background for the right side of the window and the player character.
+        player = FXGL.getAssetLoader().loadTexture("PlayerNeutral.png");
+        player.setTranslateX(320);
+        player.setTranslateY(210);
+        FXGL.getGameScene().addUINode(player);
     }
     //endregion
 }
