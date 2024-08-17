@@ -1,4 +1,4 @@
-open module project.team.pro100.controller {
+open module project.team.pro.controller {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.desktop;
@@ -8,4 +8,5 @@ open module project.team.pro100.controller {
 
     exports project.team.pro100;
     exports project.team.pro100.controller;
+    exports project.team.pro100.model;
 }
