@@ -16,11 +16,13 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileInputStream;
 
 public class CustomMainMenu extends FXGLMenu{
+    //region Methods (Click To Expand)
     public CustomMainMenu(MenuType type) {
         super(type);
         FileChooser fileChooser = new FileChooser();
@@ -34,25 +36,7 @@ public class CustomMainMenu extends FXGLMenu{
             e.printStackTrace();
         }
 
-        BackgroundSize backgroundSize = new BackgroundSize(100,
-                100,
-                true,
-                true,
-                true,
-                false
-        );
-
-        BackgroundImage backgroundImage = new BackgroundImage(image,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                backgroundSize);
-
-        Background background = new Background(backgroundImage);
-
-        Pane rootPane = new Pane();
-        rootPane.setPrefSize(getAppWidth(),getAppHeight());
-        rootPane.setBackground(background);
+        Pane rootPane = getRootPane(image);
 
         Text title = FXGL.getUIFactoryService().newText("Untitled Rhythm Game", Color.BLACK, 40.0);
         Button startButton = new Button("Start Game");
@@ -75,4 +59,28 @@ public class CustomMainMenu extends FXGLMenu{
 
         getContentRoot().getChildren().add(rootPane);
     }
+
+    private @NotNull Pane getRootPane(Image image) {
+        BackgroundSize backgroundSize = new BackgroundSize(100,
+                100,
+                true,
+                true,
+                true,
+                false
+        );
+
+        BackgroundImage backgroundImage = new BackgroundImage(image,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                backgroundSize);
+
+        Background background = new Background(backgroundImage);
+
+        Pane rootPane = new Pane();
+        rootPane.setPrefSize(getAppWidth(),getAppHeight());
+        rootPane.setBackground(background);
+        return rootPane;
+    }
+    //endregion
 }

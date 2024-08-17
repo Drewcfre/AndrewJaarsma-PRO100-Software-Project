@@ -4,6 +4,7 @@ open module project.team.pro100.controller {
     requires java.desktop;
     requires javafx.media;
     requires com.almasb.fxgl.all;
+    requires annotations;
 
     exports project.team.pro100;
     exports project.team.pro100.controller;
