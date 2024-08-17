@@ -23,7 +23,6 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class RhythmApp extends GameApplication {
     //region Constants (Click To Expand)
-    private final AudioController audioControllerGenerateArrows = new AudioController();
     private final AudioController audioControllerPlayMusic = new AudioController();
     //endregion
 
