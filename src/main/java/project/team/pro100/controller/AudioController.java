@@ -1,6 +1,5 @@
 package project.team.pro100.controller;
 
-import com.almasb.fxgl.dsl.FXGL;
 import javafx.animation.PauseTransition;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;

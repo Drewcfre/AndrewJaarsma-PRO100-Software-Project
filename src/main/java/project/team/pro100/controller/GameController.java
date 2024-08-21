@@ -13,7 +13,6 @@ import project.team.pro100.RhythmApp;
 import project.team.pro100.model.Arrow;
 import project.team.pro100.model.EntityFactory;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import static com.almasb.fxgl.dsl.FXGL.onKeyDown;
