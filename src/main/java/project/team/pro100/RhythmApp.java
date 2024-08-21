@@ -88,13 +88,7 @@ public class RhythmApp extends GameApplication {
 
         EntityFactory.initGraphics();
 
-        run(() -> {
-            GameController.updateArrows(-40);
-
-            //TODO: Arrows in the array lists are slowly increasing when they should be getting deleted.
-            for (ArrayList<Arrow> arrow : arrows) System.out.print(arrow.size() + ", ");
-            System.out.println();
-        }, Duration.seconds(0.01));
+        run(() -> GameController.updateArrows(-40), Duration.seconds(0.01));
 
         PauseTransition pause = new PauseTransition(Duration.seconds(1));
         pause.setOnFinished(x -> {

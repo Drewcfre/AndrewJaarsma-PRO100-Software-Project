@@ -13,7 +13,7 @@ import project.team.pro100.RhythmApp;
 import project.team.pro100.model.Arrow;
 import project.team.pro100.model.EntityFactory;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 
 import static com.almasb.fxgl.dsl.FXGL.onKeyDown;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
@@ -102,19 +102,17 @@ public class GameController {
 
     public static void updateArrows(int removeHeight) {
         for (int i = 0; i < 4; i++) {
-            ArrayList<Arrow> oldArrows = new ArrayList<>();
-
             if(RhythmApp.getList(i) != null && !RhythmApp.getList(i).isEmpty()) {
-                for (Arrow arrow : RhythmApp.getList(i)) {
+                Iterator<Arrow> iterator = RhythmApp.getList(i).iterator();
+
+                while (iterator.hasNext()) {
+                    Arrow arrow = iterator.next();
+
                     if (arrow.getArrow() != null && arrow.getArrow().getY() < removeHeight && arrow.isUsedInv()) {
                         RhythmApp.setMisses(RhythmApp.getMisses() + 1);
                         arrow.removeArrow();
-                        oldArrows.add(arrow);
+                        iterator.remove();
                     }
-                }
-
-                for (int j = 0; j < oldArrows.size() - 1; j++) {
-                    RhythmApp.getList(i).remove(oldArrows.get(j));
                 }
             }
         }
