@@ -119,7 +119,6 @@ public class RhythmApp extends GameApplication {
         run(() -> {
             GameController.updateArrows(-40);
 
-            //TODO: Arrows in the array lists are slowly increasing when they should be getting deleted.
             for (ArrayList<Arrow> arrow : arrows) System.out.print(arrow.size() + ", ");
             System.out.println();
 
