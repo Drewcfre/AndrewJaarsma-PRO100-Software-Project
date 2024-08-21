@@ -9,83 +9,64 @@ package project.team.pro100.view;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.ui.FontType;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import org.jetbrains.annotations.NotNull;
 import project.team.pro100.RhythmApp;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 
-public class CustomPauseMenu extends FXGLMenu{
+public class CustomPauseMenu extends FXGLMenu {
     //region Methods (Click To Expand)
     public CustomPauseMenu(MenuType type) {
         super(type);
-        FileChooser fileChooser = new FileChooser();
-        Image image = null;
 
-
-        try {
-            FileInputStream input = new FileInputStream("src/main/resources/assets/textures/mainBackground.png");
-            image = new Image(input);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        Pane rootPane = getRootPane(image);
-
-        Text title = FXGL.getUIFactoryService().newText("Untitled Rhythm Game", Color.BLACK, 40.0);
+        Text title = FXGL.getUIFactoryService().newText("Untitled Rhythm Game", Color.WHITE, FontType.MONO, 40.0);
         Button resumeButton = new Button("Resume Game");
+        Button mainMenuButton = new Button("Main Menu");
         Button exitButton = new Button("Exit Game");
 
-        VBox buttonBox = new VBox(10, resumeButton, exitButton);
-        buttonBox.setAlignment(Pos.CENTER);
+        VBox window = getWindow(title, resumeButton, exitButton);
 
-        VBox menuBox = new VBox(10, title, buttonBox);
-        menuBox.setTranslateX(getAppWidth() / 2.0 - 225);
-        menuBox.setTranslateY(getAppHeight() / 2.0 - 50);
 
         resumeButton.setOnAction(e -> {
-                RhythmApp.resumeGame();
-                fireResume();
-    });
-
-        exitButton.setOnAction(e -> {
-            fireExit();
+            RhythmApp.resumeGame();
+            fireResume();
         });
 
-        rootPane.getChildren().addAll(menuBox);
 
-        getContentRoot().getChildren().add(rootPane);
+        exitButton.setOnAction(e -> fireExit());
+
+
+        getContentRoot().getChildren().add(window);
     }
 
-    private @NotNull Pane getRootPane(Image image) {
-        BackgroundSize backgroundSize = new BackgroundSize(100,
-                100,
-                true,
-                true,
-                true,
-                false
-        );
+    @NotNull
+    private VBox getWindow(Text title, Button startButton, Button browseFilesButton) {
+        VBox menuBox = new VBox(10, title, startButton, browseFilesButton);
+        menuBox.setTranslateY(getAppHeight() / 2.0 - 50);
+        menuBox.setAlignment(Pos.CENTER);
 
-        BackgroundImage backgroundImage = new BackgroundImage(image,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                backgroundSize);
+        VBox window = new VBox(10, menuBox);
+        window.setOpacity(0.9);
+        window.setMinWidth(getAppWidth());
+        window.setMinHeight(getAppHeight());
 
-        Background background = new Background(backgroundImage);
+        window.setStyle("-fx-background-color: rgba(0, 0, 0, 0.9);");
 
-        Pane rootPane = new Pane();
-        rootPane.setPrefSize(getAppWidth(),getAppHeight());
-        rootPane.setBackground(background);
-        rootPane.setOpacity(0.9);
-        return rootPane;
+        return window;
     }
     //endregion
 }
+
+

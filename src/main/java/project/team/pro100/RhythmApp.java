@@ -11,6 +11,7 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.entity.Entity;
 import javafx.animation.PauseTransition;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 import project.team.pro100.controller.AudioController;
 import project.team.pro100.controller.GameController;
@@ -18,6 +19,7 @@ import project.team.pro100.model.Arrow;
 import project.team.pro100.model.EntityFactory;
 import project.team.pro100.view.SceneFactory;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
@@ -33,7 +35,19 @@ public class RhythmApp extends GameApplication {
         AudioController.stopStartSound(false);
         isPaused = false;
     }
+
     //region Variables/Getters/Setters (Click To Expand)
+    private static File mediaLocation;
+
+    public static File getMediaLocation() {
+        return mediaLocation;
+    }
+
+    public static void setMediaLocation(File newMediaLocation) {
+        if (newMediaLocation != null) mediaLocation = newMediaLocation;
+        else throw new IllegalArgumentException("newMediaLoc is null");
+    }
+
     private final AudioController audioController = new AudioController();
 
     // A list of 4 array lists that hold the arrow objects.
@@ -78,6 +92,7 @@ public class RhythmApp extends GameApplication {
 
     //region Methods (Click To Expand)
     public static void main(String[] args) throws Exception {
+        Font.getFontNames().forEach(System.out::println);
         launch(args);
     }
 
