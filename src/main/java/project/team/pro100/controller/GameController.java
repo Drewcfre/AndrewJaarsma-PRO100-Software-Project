@@ -14,6 +14,7 @@ import project.team.pro100.model.Arrow;
 import project.team.pro100.model.EntityFactory;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import static com.almasb.fxgl.dsl.FXGL.onKeyDown;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
@@ -59,38 +60,38 @@ public class GameController {
 
         // Opens the pause menu.
         onKeyDown(KeyCode.BACK_SPACE, () -> System.out.println("BACK_SPACE"));
-        onKeyDown(KeyCode.ESCAPE, () -> System.out.println("ESCAPE"));
+        onKeyDown(KeyCode.ESCAPE, () -> {
+            System.out.println("ESCAPE");
+            RhythmApp.pauseGame();
+        });
     }
 
     private static void arrowHit(int arrowType) {
         int activeArrow;
 
         for (activeArrow = 0; activeArrow < RhythmApp.getList(arrowType).size(); activeArrow++) {
-            if(RhythmApp.getList(arrowType).get(activeArrow).isUsedInv()) {
+            if (RhythmApp.getList(arrowType).get(activeArrow).isUsedInv()) {
                 int offset = switch (arrowType) {
                     case 0, 3 -> 0;
                     case 1, 2 -> 64;
                     default -> throw new IllegalStateException("Unexpected value: " + arrowType);
                 };
 
-                if(RhythmApp.getMessage() != null) RhythmApp.getMessage().removeFromWorld();
+                if (RhythmApp.getMessage() != null) RhythmApp.getMessage().removeFromWorld();
 
                 Entity arrow = RhythmApp.getList(arrowType).getFirst().getArrow();
 
                 //TODO: Scoring seems to be off and message spawns are still buggy.
-                if(arrow.getY() < offset + 10 && arrow.getY() > offset - 10) {
+                if (arrow.getY() < offset + 10 && arrow.getY() > offset - 10) {
                     RhythmApp.setMessage(spawn("Perfect", 300, 300));
                     RhythmApp.setScore(RhythmApp.getScore() + 100);
-                }
-                else if(arrow.getY() < offset + 30) {
+                } else if (arrow.getY() < offset + 30) {
                     RhythmApp.setMessage(spawn("Good", 300, 300));
                     RhythmApp.setScore(RhythmApp.getScore() + 50);
-                }
-                else if(arrow.getY() < offset + 50) {
+                } else if (arrow.getY() < offset + 50) {
                     RhythmApp.setMessage(spawn("Okay", 300, 300));
                     RhythmApp.setScore(RhythmApp.getScore() + 10);
-                }
-                else {
+                } else {
                     RhythmApp.setMessage(spawn("Terrible", 300, 300));
                 }
 
@@ -103,19 +104,16 @@ public class GameController {
 
     public static void updateArrows(int removeHeight) {
         for (int i = 0; i < 4; i++) {
-            ArrayList<Arrow> oldArrows = new ArrayList<>();
+            if (RhythmApp.getList(i) != null && !RhythmApp.getList(i).isEmpty()) {
+                Iterator<Arrow> iterator = RhythmApp.getList(i).iterator();
 
-            if(RhythmApp.getList(i) != null && !RhythmApp.getList(i).isEmpty()) {
-                for (Arrow arrow : RhythmApp.getList(i)) {
+                while (iterator.hasNext()) {
+                    Arrow arrow = iterator.next();
                     if (arrow.getArrow() != null && arrow.getArrow().getY() < removeHeight && arrow.isUsedInv()) {
                         RhythmApp.setMisses(RhythmApp.getMisses() + 1);
                         arrow.removeArrow();
-                        oldArrows.add(arrow);
+                        iterator.remove();
                     }
-                }
-
-                for (int j = 0; j < oldArrows.size() - 1; j++) {
-                    RhythmApp.getList(i).remove(oldArrows.get(j));
                 }
             }
         }
