@@ -75,9 +75,8 @@ public class GameController {
 
                 if(RhythmApp.getMessage() != null) RhythmApp.getMessage().removeFromWorld();
 
-                Entity arrow = RhythmApp.getList(arrowType).getFirst().getArrow();
+                Entity arrow = RhythmApp.getList(arrowType).get(activeArrow).getArrow();
 
-                //TODO: Scoring seems to be off and message spawns are still buggy.
                 if(arrow.getY() < offset + 10 && arrow.getY() > offset - 10) {
                     RhythmApp.setMessage(spawn("Perfect", 300, 300));
                     RhythmApp.setScore(RhythmApp.getScore() + 100);

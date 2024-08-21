@@ -17,49 +17,60 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import org.jetbrains.annotations.NotNull;
+import project.team.pro100.RhythmApp;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 public class CustomMainMenu extends FXGLMenu{
     //region Methods (Click To Expand)
     public CustomMainMenu(MenuType type) {
         super(type);
 
-        Background background = getBackground();
         Text title = FXGL.getUIFactoryService().newText("Untitled Rhythm Game", Color.BLACK, 40.0);
         FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Music Files", "*.mp3", "*.wav"));
         Button startButton = new Button("Start Game");
         Button browseFilesButton = new Button("Search For Songs");
 
-        VBox menuBox = new VBox(10, title, startButton, browseFilesButton);
-        menuBox.setTranslateX(getAppWidth() / 2.0 - 225);
-        menuBox.setTranslateY(getAppHeight() / 2.0 - 50);
-        menuBox.setBackground(background);
+        VBox window = getWindow(title, startButton, browseFilesButton);
 
         startButton.setOnAction(e -> fireNewGame());
 
-        //TODO: Finish file selection.
         browseFilesButton.setOnAction(e -> {
             File file = fileChooser.showOpenDialog(null);
+            RhythmApp.setMediaLoc(file);
         });
 
-        getContentRoot().getChildren().add(menuBox);
+        getContentRoot().getChildren().add(window);
     }
 
-    @NotNull private static Background getBackground() {
-        Image image;
+    @NotNull private VBox getWindow(Text title, Button startButton, Button browseFilesButton) {
+        VBox menuBox = new VBox(10, title, startButton, browseFilesButton);
+        menuBox.setTranslateX(getAppWidth() / 2.0 - 225);
+        menuBox.setTranslateY(getAppHeight() / 2.0 - 50);
 
-        try {
-            FileInputStream input = new FileInputStream("src/main/resources/assets/textures/wasp.gif");
-            image = new Image(input);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,BackgroundSize.DEFAULT);
-        return new Background(backgroundImage);
+        VBox window = new VBox(10, menuBox);
+        window.setMinWidth(getAppWidth());
+        window.setMinHeight(getAppHeight());
+        window.setBackground(
+            new Background(
+                new BackgroundImage(
+                    new Image("file:src/main/resources/assets/textures/mainBackground.png", true),
+                    BackgroundRepeat.NO_REPEAT,
+                    BackgroundRepeat.NO_REPEAT,
+                    BackgroundPosition.CENTER,
+                    new BackgroundSize(
+                            1.0,
+                            1.0,
+                            true,
+                            true,
+                            false,
+                            false
+                    )
+                )
+            )
+        );
+        return window;
     }
     //endregion
 }

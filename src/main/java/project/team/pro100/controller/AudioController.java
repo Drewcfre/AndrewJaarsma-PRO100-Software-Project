@@ -8,6 +8,7 @@ import project.team.pro100.RhythmApp;
 import project.team.pro100.model.Arrow;
 
 import java.io.File;
+import java.net.MalformedURLException;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
@@ -17,8 +18,8 @@ public class AudioController {
     //endregion
 
     //region Methods (Click To Expand)
-    public void initAudioController(String mediaLocation, int delayInMilliseconds, boolean hasListener) throws InterruptedException {
-        Media media = new Media(new File(mediaLocation).toURI().toString());
+    public void initAudioController(File mediaLocation, int delayInMilliseconds, boolean hasListener) throws InterruptedException {
+        Media media = new Media(mediaLocation.toURI().toString());
         MediaPlayer soundValueOutput = new MediaPlayer(media);
         soundValueOutput.setMute(true);
         playAudio = new MediaPlayer(media);

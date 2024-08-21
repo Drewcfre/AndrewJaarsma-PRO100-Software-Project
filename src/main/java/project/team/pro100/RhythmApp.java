@@ -10,20 +10,29 @@ package project.team.pro100;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.entity.Entity;
+import static com.almasb.fxgl.dsl.FXGL.*;
+
 import javafx.animation.PauseTransition;
 import javafx.util.Duration;
-import project.team.pro100.controller.AudioController;
-import project.team.pro100.controller.GameController;
-import project.team.pro100.model.Arrow;
-import project.team.pro100.model.EntityFactory;
+
+import project.team.pro100.controller.*;
+import project.team.pro100.model.*;
 import project.team.pro100.view.SceneFactory;
 
+import java.io.File;
 import java.util.ArrayList;
-
-import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class RhythmApp extends GameApplication {
     //region Variables/Getters/Setters (Click To Expand)
+    private static File mediaLoc;
+    public static File getMediaLoc() {
+        return mediaLoc;
+    }
+    public static void setMediaLoc(File newMediaLoc) {
+        if(newMediaLoc != null) mediaLoc = newMediaLoc;
+        else throw new IllegalArgumentException("newMediaLoc is null");
+    }
+
     private final AudioController audioController = new AudioController();
 
     // A list of 4 array lists that hold the arrow objects.
@@ -90,7 +99,7 @@ public class RhythmApp extends GameApplication {
         PauseTransition pause = new PauseTransition(Duration.seconds(1));
         pause.setOnFinished(x -> {
             try {
-                audioController.initAudioController("src/main/resources/assets/music/sugar.mp3", 1450, true);
+                audioController.initAudioController(getMediaLoc(), 1450, true);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
