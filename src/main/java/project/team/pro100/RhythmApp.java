@@ -24,12 +24,24 @@ import java.util.ArrayList;
 
 public class RhythmApp extends GameApplication {
     //region Variables/Getters/Setters (Click To Expand)
-    private static File mediaLoc;
-    public static File getMediaLoc() {
-        return mediaLoc;
+    public static void pauseGame() {
+        AudioController.stopStartSound(true);
+        isPaused = true;
     }
-    public static void setMediaLoc(File newMediaLoc) {
-        if(newMediaLoc != null) mediaLoc = newMediaLoc;
+
+    public static void resumeGame() {
+        AudioController.stopStartSound(false);
+        isPaused = false;
+    }
+
+    private static File mediaLocation;
+
+    public static File getMediaLocation() {
+        return mediaLocation;
+    }
+
+    public static void setMediaLocation(File newMediaLocation) {
+        if (newMediaLocation != null) mediaLocation = newMediaLocation;
         else throw new IllegalArgumentException("newMediaLoc is null");
     }
 
@@ -37,32 +49,39 @@ public class RhythmApp extends GameApplication {
 
     // A list of 4 array lists that hold the arrow objects.
     private static final ArrayList<ArrayList<Arrow>> arrows = new ArrayList<>();
+
     public static ArrayList<Arrow> getList(int type) {
         return arrows.get(type);
     }
 
     // Displays a graphic on the side of the screen that rates the accuracy of your last input.
     private static Entity message = null;
+
     public static Entity getMessage() {
         return message;
     }
+
     public static void setMessage(Entity newMessage) {
-        if(newMessage != null) message = newMessage;
+        if (newMessage != null) message = newMessage;
         else throw new NullPointerException("newMessage is null");
     }
 
     private static int misses;
+
     public static int getMisses() {
         return misses;
     }
+
     public static void setMisses(int miss) {
         misses = miss;
     }
 
     private static int score;
+
     public static int getScore() {
         return score;
     }
+
     public static void setScore(int num) {
         score = num;
     }
@@ -73,7 +92,10 @@ public class RhythmApp extends GameApplication {
         launch(args);
     }
 
-    @Override protected void initSettings(GameSettings gameSettings) {
+    private static boolean isPaused;
+
+    @Override
+    protected void initSettings(GameSettings gameSettings) {
         gameSettings.setWidth(512);
         gameSettings.setHeight(512);
         gameSettings.setTitle("Untitled Rhythm Game");
@@ -83,7 +105,8 @@ public class RhythmApp extends GameApplication {
         gameSettings.setMainMenuEnabled(true);
     }
 
-    @Override protected void initGame() {
+    @Override
+    protected void initGame() {
         for (int i = 0; i < 4; i++) arrows.add(new ArrayList<>());
 
         EntityFactory.initGraphics();
@@ -93,7 +116,7 @@ public class RhythmApp extends GameApplication {
         PauseTransition pause = new PauseTransition(Duration.seconds(1));
         pause.setOnFinished(x -> {
             try {
-                audioController.initAudioController(getMediaLoc(), 1450, true);
+                audioController.initAudioController(getMediaLocation(), 1450, true);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -101,18 +124,23 @@ public class RhythmApp extends GameApplication {
         pause.play();
     }
 
-    @Override protected void initInput() {
+    @Override
+    protected void initInput() {
         GameController.userInput();
     }
 
-    @Override protected void onUpdate(double tpf) {
-        for (int i = 0; i < 4; i++) {
-            if (getList(i) != null && !getList(i).isEmpty()) {
-                for (Arrow arrow : getList(i)) {
-                    arrow.getArrow().translateY(-2);
+    @Override
+    protected void onUpdate(double tpf) {
+        if (isPaused) {
+        } else {
+            for (int i = 0; i < 4; i++) {
+                if (getList(i) != null && !getList(i).isEmpty()) {
+                    for (Arrow arrow : getList(i)) {
+                        arrow.getArrow().translateY(-2);
+                    }
                 }
             }
         }
+        //endregion
     }
-    //endregion
 }

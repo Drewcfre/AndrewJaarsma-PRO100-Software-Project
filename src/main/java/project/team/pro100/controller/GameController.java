@@ -59,7 +59,7 @@ public class GameController {
 
         // Opens the pause menu.
         onKeyDown(KeyCode.BACK_SPACE, () -> System.out.println("BACK_SPACE"));
-        onKeyDown(KeyCode.ESCAPE, () -> System.out.println("ESCAPE"));
+        onKeyDown(KeyCode.ESCAPE, () -> RhythmApp.pauseGame());
     }
 
     private static void arrowHit(int arrowType) {

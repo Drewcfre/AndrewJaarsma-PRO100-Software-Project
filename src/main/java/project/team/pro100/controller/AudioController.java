@@ -13,13 +13,14 @@ import static com.almasb.fxgl.dsl.FXGL.spawn;
 
 public class AudioController {
     //region Variables/Getters/Setters (Click To Expand)
-    private MediaPlayer playAudio;
+    private static MediaPlayer playAudio;
+    private static MediaPlayer soundValueOutput;
     //endregion
 
     //region Methods (Click To Expand)
     public void initAudioController(File mediaLocation, int delayInMilliseconds, boolean hasListener) throws InterruptedException {
         Media media = new Media(mediaLocation.toURI().toString());
-        MediaPlayer soundValueOutput = new MediaPlayer(media);
+        soundValueOutput = new MediaPlayer(media);
         soundValueOutput.setMute(true);
         playAudio = new MediaPlayer(media);
 
@@ -47,6 +48,16 @@ public class AudioController {
         PauseTransition pause = new PauseTransition(Duration.millis(delayInMilliseconds));
         pause.setOnFinished(e -> playAudio.play());
         pause.play();
+    }
+
+    public static void stopStartSound(boolean paused) {
+        if (paused) {
+            playAudio.pause();
+            soundValueOutput.pause();
+        } else {
+            soundValueOutput.play();
+            playAudio.play();
+        }
     }
     //endregion
 }

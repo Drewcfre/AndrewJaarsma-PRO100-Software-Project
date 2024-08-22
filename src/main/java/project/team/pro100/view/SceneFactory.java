@@ -16,5 +16,9 @@ public class SceneFactory extends com.almasb.fxgl.app.scene.SceneFactory{
     @NotNull @Override public FXGLMenu newMainMenu() {
         return new CustomMainMenu(MenuType.MAIN_MENU);
     }
+
+    @NotNull @Override public FXGLMenu newGameMenu() {
+        return new CustomPauseMenu(MenuType.GAME_MENU);
+    }
     //endregion
 }
