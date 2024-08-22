@@ -12,19 +12,11 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.ui.FontType;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
 import org.jetbrains.annotations.NotNull;
 import project.team.pro100.RhythmApp;
-
-import java.awt.*;
-import java.io.File;
-import java.io.FileInputStream;
 
 public class CustomPauseMenu extends FXGLMenu {
     //region Methods (Click To Expand)

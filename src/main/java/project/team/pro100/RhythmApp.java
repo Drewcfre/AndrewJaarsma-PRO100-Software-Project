@@ -131,8 +131,7 @@ public class RhythmApp extends GameApplication {
 
     @Override
     protected void onUpdate(double tpf) {
-        if (isPaused) {
-        } else {
+        if (!isPaused)  {
             for (int i = 0; i < 4; i++) {
                 if (getList(i) != null && !getList(i).isEmpty()) {
                     for (Arrow arrow : getList(i)) {
