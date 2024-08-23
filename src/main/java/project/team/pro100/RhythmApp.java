@@ -162,7 +162,6 @@ public class RhythmApp extends GameApplication {
         pause.setOnFinished(x -> {
             try {
                 audioController.initAudioController(getMediaLocation(), 1450, true);
-                audioController.getPlayAudio().setOnEndOfMedia(() -> setEndOfFile(true));
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -185,13 +184,10 @@ public class RhythmApp extends GameApplication {
                     }
                 }
             }
-            if (getEndOfFile() && arrows.stream().allMatch(ArrayList::isEmpty)) {
+            if (getEndOfFile()) {
                 FXGL.getSceneService().pushSubScene(new GameCompleteMenu());
-
             }
         }
-
-
         //endregion
     }
 }

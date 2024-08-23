@@ -10,14 +10,12 @@ import project.team.pro100.model.Arrow;
 import java.io.File;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
+import static project.team.pro100.RhythmApp.setEndOfFile;
 
 public class AudioController {
     //region Variables/Getters/Setters (Click To Expand)
     private static MediaPlayer playAudio;
     private static MediaPlayer soundValueOutput;
-    public MediaPlayer getPlayAudio() {
-        return playAudio;
-    }
     //endregion
 
     //region Methods (Click To Expand)
@@ -26,6 +24,11 @@ public class AudioController {
         soundValueOutput = new MediaPlayer(media);
         soundValueOutput.setMute(true);
         playAudio = new MediaPlayer(media);
+
+        playAudio.setOnEndOfMedia(() -> {
+            setEndOfFile(true);
+            playAudio.dispose();
+        });
 
         if(hasListener) {
             soundValueOutput.setAudioSpectrumListener(((timestamp, duration, magnitudes, phases) -> {
