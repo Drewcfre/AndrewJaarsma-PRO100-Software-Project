@@ -35,7 +35,8 @@ public class CustomMainMenu extends FXGLMenu {
 
         Text title = FXGL.getUIFactoryService().newText("Untitled Rhythm Game", Color.BLACK, FontType.MONO, 40.0);
         Text error = FXGL.getUIFactoryService().newText("Please Choose A Song Before Playing", Color.RED, FontType.MONO, 20.0);
-        error.setVisible(false);
+        VBox errorBox = createErrorBox(error);
+        errorBox.setVisible(false);
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Music Files", "*.mp3", "*.wav"));
@@ -44,11 +45,14 @@ public class CustomMainMenu extends FXGLMenu {
         Button browseFilesButton = new Button("Search For Songs");
         Button exitButton = new Button("Exit");
 
-        VBox window = getWindow(title, startButton, browseFilesButton, exitButton, error);
+        VBox window = getWindow(title, startButton, browseFilesButton, exitButton, errorBox);
 
         startButton.setOnAction(e -> {
-            if (selectedFile != null) fireNewGame();
-            else error.setVisible(true);
+            if (selectedFile != null) {
+                fireNewGame();
+                RhythmApp.setEndOfFile(false);
+            }
+            else errorBox.setVisible(true);
         });
 
         browseFilesButton.setOnAction(e -> {
@@ -57,7 +61,7 @@ public class CustomMainMenu extends FXGLMenu {
                 saveFileToGameFolder(file);
                 selectedFile = new File("SONGS_FOLDER/" + file.getName());
                 RhythmApp.setMediaLocation(new File("SONGS_FOLDER/" + file.getName()));
-                error.setVisible(false);
+                errorBox.setVisible(false);
             }
         });
 
@@ -81,8 +85,8 @@ public class CustomMainMenu extends FXGLMenu {
     }
 
     @NotNull
-    private VBox getWindow(Text title, Button startButton, Button browseFilesButton, Button exitButton, Text error) {
-        VBox menuBox = new VBox(10, title, startButton, browseFilesButton, exitButton, error);
+    private VBox getWindow(Text title, Button startButton, Button browseFilesButton, Button exitButton, VBox errorBox) {
+        VBox menuBox = new VBox(10, title, startButton, browseFilesButton, exitButton, errorBox);
         menuBox.setAlignment(Pos.CENTER);
         menuBox.setTranslateY(getAppHeight() / 2.0 - 50);
 
@@ -108,6 +112,14 @@ public class CustomMainMenu extends FXGLMenu {
                 )
         );
         return window;
+    }
+
+    private static VBox createErrorBox(Text error){
+        VBox errorBox = new VBox(10, error);
+        errorBox.setAlignment(Pos.CENTER);
+        errorBox.setStyle("-fx-background-color: rgba(0,0,0,0.78);");
+        errorBox.setMaxWidth(.5);
+        return errorBox;
     }
     //endregion
 }

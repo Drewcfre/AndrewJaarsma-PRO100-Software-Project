@@ -49,7 +49,6 @@ public class CustomPauseMenu extends FXGLMenu {
         menuBox.setAlignment(Pos.CENTER);
 
         VBox window = new VBox(10, menuBox);
-        window.setOpacity(0.9);
         window.setMinWidth(getAppWidth());
         window.setMinHeight(getAppHeight());
 
