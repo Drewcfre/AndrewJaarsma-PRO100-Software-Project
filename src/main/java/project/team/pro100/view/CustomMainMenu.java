@@ -47,7 +47,10 @@ public class CustomMainMenu extends FXGLMenu {
         VBox window = getWindow(title, startButton, browseFilesButton, exitButton, error);
 
         startButton.setOnAction(e -> {
-            if (selectedFile != null) fireNewGame();
+            if (selectedFile != null) {
+                fireNewGame();
+                RhythmApp.setEndOfFile(false);
+            }
             else error.setVisible(true);
         });
 

@@ -9,14 +9,19 @@ package project.team.pro100;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.app.scene.FXGLMenu;
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 import javafx.animation.PauseTransition;
 import javafx.util.Duration;
 
+import org.jetbrains.annotations.NotNull;
 import project.team.pro100.controller.*;
 import project.team.pro100.model.*;
+import project.team.pro100.view.GameCompleteMenu;
 import project.team.pro100.view.SceneFactory;
 
 import java.io.File;
@@ -85,6 +90,26 @@ public class RhythmApp extends GameApplication {
     public static void setScore(int num) {
         score = num;
     }
+
+    private static int totalArrows;
+
+    public static int getTotalArrows() {
+        return totalArrows;
+    }
+
+    public static void setTotalArrows(int totalArrows) {
+        RhythmApp.totalArrows = totalArrows;
+    }
+
+    private static boolean endOfFile = false;
+
+    public static boolean getEndOfFile() {
+        return endOfFile;
+    }
+
+    public static void setEndOfFile(boolean endOfFile) {
+        RhythmApp.endOfFile = endOfFile;
+    }
     //endregion
 
     //region Methods (Click To Expand)
@@ -103,6 +128,17 @@ public class RhythmApp extends GameApplication {
 
         gameSettings.setSceneFactory(new SceneFactory());
         gameSettings.setMainMenuEnabled(true);
+
+        if (getEndOfFile()) {
+            gameSettings.setSceneFactory(new SceneFactory() {
+
+                @NotNull
+                @Override
+                public FXGLMenu newGameMenu() {
+                    return new GameCompleteMenu();
+                }
+            });
+        }
     }
 
     @Override
@@ -111,12 +147,22 @@ public class RhythmApp extends GameApplication {
 
         EntityFactory.initGraphics();
 
-        run(() -> GameController.updateArrows(-40), Duration.seconds(0.01));
+        run(() -> {
+            GameController.updateArrows(-40);
+
+            if (arrows.getFirst().isEmpty() && arrows.get(1).isEmpty() &&
+                    arrows.get(2).isEmpty() && arrows.get(3).isEmpty() && endOfFile) {
+                //TODO: Add endgame logic here.
+                int perfectScore = getTotalArrows() * 100;
+                System.out.println(perfectScore);
+            }
+        }, Duration.seconds(0.01));
 
         PauseTransition pause = new PauseTransition(Duration.seconds(1));
         pause.setOnFinished(x -> {
             try {
                 audioController.initAudioController(getMediaLocation(), 1450, true);
+                audioController.getPlayAudio().setOnEndOfMedia(() -> setEndOfFile(true));
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -131,7 +177,7 @@ public class RhythmApp extends GameApplication {
 
     @Override
     protected void onUpdate(double tpf) {
-        if (!isPaused)  {
+        if (!isPaused) {
             for (int i = 0; i < 4; i++) {
                 if (getList(i) != null && !getList(i).isEmpty()) {
                     for (Arrow arrow : getList(i)) {
@@ -139,7 +185,13 @@ public class RhythmApp extends GameApplication {
                     }
                 }
             }
+            if (getEndOfFile() && arrows.stream().allMatch(ArrayList::isEmpty)) {
+                FXGL.getSceneService().pushSubScene(new GameCompleteMenu());
+
+            }
         }
+
+
         //endregion
     }
 }

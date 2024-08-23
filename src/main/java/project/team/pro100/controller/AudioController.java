@@ -15,6 +15,9 @@ public class AudioController {
     //region Variables/Getters/Setters (Click To Expand)
     private static MediaPlayer playAudio;
     private static MediaPlayer soundValueOutput;
+    public MediaPlayer getPlayAudio() {
+        return playAudio;
+    }
     //endregion
 
     //region Methods (Click To Expand)
@@ -29,15 +32,19 @@ public class AudioController {
                 for (int i = 0; i < magnitudes.length; i+=50) {
                     if ((int) magnitudes[i] == -57) {
                         RhythmApp.getList(0).add(new Arrow(spawn("ArrowRed", 0, 512)));
+                        RhythmApp.setTotalArrows(RhythmApp.getTotalArrows() + 1);
                     }
                     else if ((int) magnitudes[i] >= -50 && (int) magnitudes[i] <= -47) {
                         RhythmApp.getList(1).add(new Arrow(spawn("ArrowGreen", 64, 576)));
+                        RhythmApp.setTotalArrows(RhythmApp.getTotalArrows() + 1);
                     }
                     else if ((int) magnitudes[i] >= -31 && (int) magnitudes[i] <= -32) {
                         RhythmApp.getList(2).add(new Arrow(spawn("ArrowBlue", 192, 576)));
+                        RhythmApp.setTotalArrows(RhythmApp.getTotalArrows() + 1);
                     }
                     else if ((int) magnitudes[i] == -26) {
                         RhythmApp.getList(3).add(new Arrow(spawn("ArrowYellow", 256, 512)));
+                        RhythmApp.setTotalArrows(RhythmApp.getTotalArrows() + 1);
                     }
                 }
             }));
@@ -48,6 +55,7 @@ public class AudioController {
         PauseTransition pause = new PauseTransition(Duration.millis(delayInMilliseconds));
         pause.setOnFinished(e -> playAudio.play());
         pause.play();
+
     }
 
     public static void stopStartSound(boolean paused) {
