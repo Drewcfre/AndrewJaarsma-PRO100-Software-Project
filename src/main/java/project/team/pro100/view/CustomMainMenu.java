@@ -22,13 +22,20 @@ import org.jetbrains.annotations.NotNull;
 import project.team.pro100.RhythmApp;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 public class CustomMainMenu extends FXGLMenu {
+    private File selectedFile;
     //region Methods (Click To Expand)
     public CustomMainMenu(MenuType type) {
         super(type);
 
         Text title = FXGL.getUIFactoryService().newText("Untitled Rhythm Game", Color.BLACK, FontType.MONO, 40.0);
+        Text error = FXGL.getUIFactoryService().newText("Please Choose A Song Before Playing", Color.RED, FontType.MONO, 20.0);
+        error.setVisible(false);
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Music Files", "*.mp3", "*.wav"));
@@ -37,13 +44,21 @@ public class CustomMainMenu extends FXGLMenu {
         Button browseFilesButton = new Button("Search For Songs");
         Button exitButton = new Button("Exit");
 
-        VBox window = getWindow(title, startButton, browseFilesButton, exitButton);
+        VBox window = getWindow(title, startButton, browseFilesButton, exitButton, error);
 
-        startButton.setOnAction(e -> fireNewGame());
+        startButton.setOnAction(e -> {
+            if (selectedFile != null) fireNewGame();
+            else error.setVisible(true);
+        });
 
         browseFilesButton.setOnAction(e -> {
             File file = fileChooser.showOpenDialog(null);
-            RhythmApp.setMediaLocation(file);
+            if (file != null) {
+                saveFileToGameFolder(file);
+                selectedFile = new File("SONGS_FOLDER/" + file.getName());
+                RhythmApp.setMediaLocation(new File("SONGS_FOLDER/" + file.getName()));
+                error.setVisible(false);
+            }
         });
 
         exitButton.setOnAction(e -> fireExit());
@@ -51,9 +66,23 @@ public class CustomMainMenu extends FXGLMenu {
         getContentRoot().getChildren().add(window);
     }
 
+    private void saveFileToGameFolder(File file) {
+        try {
+            File dir = new File("SONGS_FOLDER");
+            if (!dir.mkdirs()) {
+                System.out.println("Could not create folder " + dir.getAbsolutePath());
+            }
+
+            Path destination = Path.of("SONGS_FOLDER", file.getName());
+            Files.copy(file.toPath(), destination, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     @NotNull
-    private VBox getWindow(Text title, Button startButton, Button browseFilesButton, Button exitButton) {
-        VBox menuBox = new VBox(10, title, startButton, browseFilesButton, exitButton);
+    private VBox getWindow(Text title, Button startButton, Button browseFilesButton, Button exitButton, Text error) {
+        VBox menuBox = new VBox(10, title, startButton, browseFilesButton, exitButton, error);
         menuBox.setAlignment(Pos.CENTER);
         menuBox.setTranslateY(getAppHeight() / 2.0 - 50);
 
