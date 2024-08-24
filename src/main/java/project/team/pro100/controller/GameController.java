@@ -23,51 +23,25 @@ public class GameController {
 
     //region Methods (Click To Expand)
     public static void userInput() {
-        onKeyDown(KeyCode.W, () -> {
-            if(EntityFactory.getPlayer() != null) EntityFactory.getPlayer().removeFromWorld();
-            EntityFactory.setPlayer(spawn("PlayerUp", 330, 150));
-            arrowHit(0);
-        });
-        onKeyDown(KeyCode.UP, () -> {
-            if(EntityFactory.getPlayer() != null) EntityFactory.getPlayer().removeFromWorld();
-            EntityFactory.setPlayer(spawn("PlayerUp", 330, 150));
-            arrowHit(0);
-        });
+        onKeyDown(KeyCode.W, () -> whenKeyPressed("PlayerUp", 150, 0));
+        onKeyDown(KeyCode.UP, () -> whenKeyPressed("PlayerUp", 150, 0));
 
-        onKeyDown(KeyCode.A, () -> {
-            if(EntityFactory.getPlayer() != null) EntityFactory.getPlayer().removeFromWorld();
-            EntityFactory.setPlayer(spawn("PlayerLeft", 330, 150));
-            arrowHit(1);
-        });
-        onKeyDown(KeyCode.LEFT, () -> {
-            if(EntityFactory.getPlayer() != null) EntityFactory.getPlayer().removeFromWorld();
-            EntityFactory.setPlayer(spawn("PlayerLeft", 330, 150));
-            arrowHit(1);
-        });
+        onKeyDown(KeyCode.A, () -> whenKeyPressed("PlayerLeft", 150, 1));
+        onKeyDown(KeyCode.LEFT, () -> whenKeyPressed("PlayerLeft", 150, 1));
 
-        onKeyDown(KeyCode.S, () -> {
-            if(EntityFactory.getPlayer() != null) EntityFactory.getPlayer().removeFromWorld();
-            EntityFactory.setPlayer(spawn("PlayerDown", 330, 180));
-            arrowHit(2);
-        });
-        onKeyDown(KeyCode.DOWN, () -> {
-            if(EntityFactory.getPlayer() != null) EntityFactory.getPlayer().removeFromWorld();
-            EntityFactory.setPlayer(spawn("PlayerDown", 330, 180));
-            arrowHit(2);
-        });
+        onKeyDown(KeyCode.S, () -> whenKeyPressed("PlayerDown", 180, 2));
+        onKeyDown(KeyCode.DOWN, () -> whenKeyPressed("PlayerDown", 180, 2));
 
-        onKeyDown(KeyCode.D, () -> {
-            if(EntityFactory.getPlayer() != null) EntityFactory.getPlayer().removeFromWorld();
-            EntityFactory.setPlayer(spawn("PlayerRight", 330, 150));
-            arrowHit(3);
-        });
-        onKeyDown(KeyCode.RIGHT, () -> {
-            if(EntityFactory.getPlayer() != null) EntityFactory.getPlayer().removeFromWorld();
-            EntityFactory.setPlayer(spawn("PlayerRight", 330, 150));
-            arrowHit(3);
-        });
+        onKeyDown(KeyCode.D, () -> whenKeyPressed("PlayerRight", 150, 3));
+        onKeyDown(KeyCode.RIGHT, () -> whenKeyPressed("PlayerRight", 150, 3));
 
         onKeyDown(KeyCode.ESCAPE, RhythmApp::pauseGame);
+    }
+
+    private static void whenKeyPressed(String entityName, int y, int arrowType){
+        if(EntityFactory.getPlayer() != null) EntityFactory.getPlayer().removeFromWorld();
+        EntityFactory.setPlayer(spawn(entityName, 330, y));
+        arrowHit(arrowType);
     }
 
     private static void arrowHit(int arrowType) {
