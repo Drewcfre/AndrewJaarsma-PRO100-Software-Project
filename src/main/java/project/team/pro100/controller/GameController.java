@@ -19,50 +19,60 @@ import static com.almasb.fxgl.dsl.FXGL.onKeyDown;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
 
 public class GameController {
+    //TODO: Game Controller is unoptimized and contains repetitive code.
+
     //region Methods (Click To Expand)
     public static void userInput() {
         onKeyDown(KeyCode.W, () -> {
-            EntityFactory.setPlayer("PlayerUp.png");
+            if(EntityFactory.getPlayer() != null) EntityFactory.getPlayer().removeFromWorld();
+            EntityFactory.setPlayer(spawn("PlayerUp", 330, 150));
             arrowHit(0);
         });
         onKeyDown(KeyCode.UP, () -> {
-            EntityFactory.setPlayer("PlayerUp.png");
+            if(EntityFactory.getPlayer() != null) EntityFactory.getPlayer().removeFromWorld();
+            EntityFactory.setPlayer(spawn("PlayerUp", 330, 150));
             arrowHit(0);
         });
 
         onKeyDown(KeyCode.A, () -> {
-            EntityFactory.setPlayer("PlayerLeft.png");
+            if(EntityFactory.getPlayer() != null) EntityFactory.getPlayer().removeFromWorld();
+            EntityFactory.setPlayer(spawn("PlayerLeft", 330, 150));
             arrowHit(1);
         });
         onKeyDown(KeyCode.LEFT, () -> {
-            EntityFactory.setPlayer("PlayerLeft.png");
+            if(EntityFactory.getPlayer() != null) EntityFactory.getPlayer().removeFromWorld();
+            EntityFactory.setPlayer(spawn("PlayerLeft", 330, 150));
             arrowHit(1);
         });
 
         onKeyDown(KeyCode.S, () -> {
-            EntityFactory.setPlayer("PlayerDown.png");
+            if(EntityFactory.getPlayer() != null) EntityFactory.getPlayer().removeFromWorld();
+            EntityFactory.setPlayer(spawn("PlayerDown", 330, 180));
             arrowHit(2);
         });
         onKeyDown(KeyCode.DOWN, () -> {
-            EntityFactory.setPlayer("PlayerDown.png");
+            if(EntityFactory.getPlayer() != null) EntityFactory.getPlayer().removeFromWorld();
+            EntityFactory.setPlayer(spawn("PlayerDown", 330, 180));
             arrowHit(2);
         });
 
         onKeyDown(KeyCode.D, () -> {
-            EntityFactory.setPlayer("PlayerRight.png");
+            if(EntityFactory.getPlayer() != null) EntityFactory.getPlayer().removeFromWorld();
+            EntityFactory.setPlayer(spawn("PlayerRight", 330, 150));
             arrowHit(3);
         });
         onKeyDown(KeyCode.RIGHT, () -> {
-            EntityFactory.setPlayer("PlayerRight.png");
+            if(EntityFactory.getPlayer() != null) EntityFactory.getPlayer().removeFromWorld();
+            EntityFactory.setPlayer(spawn("PlayerRight", 330, 150));
             arrowHit(3);
         });
 
-        // Opens the pause menu.
-        onKeyDown(KeyCode.BACK_SPACE, () -> System.out.println("BACK_SPACE"));
         onKeyDown(KeyCode.ESCAPE, RhythmApp::pauseGame);
     }
 
     private static void arrowHit(int arrowType) {
+        RhythmApp.setCounter(0);
+
         int activeArrow;
 
         for (activeArrow = 0; activeArrow < RhythmApp.getList(arrowType).size(); activeArrow++) {
@@ -78,19 +88,21 @@ public class GameController {
                 Entity arrow = RhythmApp.getList(arrowType).get(activeArrow).getArrow();
 
                 if(arrow.getY() < offset + 10 && arrow.getY() > offset - 10) {
-                    RhythmApp.setMessage(spawn("Perfect", 300, 300));
+                    RhythmApp.setMessage(spawn("Perfect", 350, 30));
                     RhythmApp.setScore(RhythmApp.getScore() + 100);
                 }
                 else if(arrow.getY() < offset + 30) {
-                    RhythmApp.setMessage(spawn("Good", 300, 300));
+                    RhythmApp.setMessage(spawn("Good", 350, 30));
                     RhythmApp.setScore(RhythmApp.getScore() + 50);
                 }
                 else if(arrow.getY() < offset + 50) {
-                    RhythmApp.setMessage(spawn("Okay", 300, 300));
+                    RhythmApp.setMessage(spawn("Okay", 350, 30));
                     RhythmApp.setScore(RhythmApp.getScore() + 10);
                 }
                 else {
-                    RhythmApp.setMessage(spawn("Terrible", 300, 300));
+                    RhythmApp.setMessage(spawn("Terrible", 350, 30));
+                    if(EntityFactory.getPlayer() != null) EntityFactory.getPlayer().removeFromWorld();
+                    EntityFactory.setPlayer(spawn("PlayerDead", 280, 280));
                 }
 
                 RhythmApp.getList(arrowType).get(activeArrow).removeArrow();

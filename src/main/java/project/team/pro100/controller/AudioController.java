@@ -15,9 +15,6 @@ import static project.team.pro100.RhythmApp.setEndOfFile;
 public class AudioController {
     //region Variables/Getters/Setters (Click To Expand)
     private static MediaPlayer playAudio;
-    public MediaPlayer getPlayAudio() {
-        return playAudio;
-    }
     private static MediaPlayer soundValueOutput;
     //endregion
 
@@ -68,7 +65,8 @@ public class AudioController {
         if(paused) {
             playAudio.pause();
             soundValueOutput.pause();
-        } else {
+        }
+        else {
             playAudio.play();
             soundValueOutput.play();
         }

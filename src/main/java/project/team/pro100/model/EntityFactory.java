@@ -11,7 +11,6 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
-import com.almasb.fxgl.texture.Texture;
 import javafx.scene.text.Text;
 
 import static com.almasb.fxgl.dsl.FXGL.getGameWorld;
@@ -22,53 +21,90 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
     //region Entity Spawns (Click to Expand)
     // IntelliJ wrongly flags these methods as unused.
     // Suppress the unused inspection in this file to get rid of the warnings.
+    //TODO: If anyone wants to, you could replace most of these with a single generic method.
     @Spawns("ArrowRed") public Entity newArrowRed(SpawnData data) {
         return entityBuilder(data)
-                .view("ArrowRed.png")
+                .view("arrows/ArrowRed.png")
                 .build();
     }
     @Spawns("ArrowGreen") public Entity newArrowGreen(SpawnData data) {
         return entityBuilder(data)
-                .view("ArrowGreen.png")
+                .view("arrows/ArrowGreen.png")
                 .rotate(270)
                 .build();
     }
     @Spawns("ArrowBlue") public Entity newArrowBlue(SpawnData data) {
         return entityBuilder(data)
-                .view("ArrowBlue.png")
+                .view("arrows/ArrowBlue.png")
                 .rotate(180)
                 .build();
     }
     @Spawns("ArrowYellow") public Entity newArrowYellow(SpawnData data) {
         return entityBuilder(data)
-                .view("ArrowYellow.png")
+                .view("arrows/ArrowYellow.png")
                 .rotate(90)
                 .build();
     }
-    @Spawns("ArrowPreload") public Entity newArrowPreload(SpawnData data){
+    @Spawns("ArrowPreload") public Entity newArrowPreload(SpawnData data) {
         return entityBuilder(data)
-                .view("ArrowRed.png")
+                .view("arrows/ArrowRed.png")
+                .build();
+    }
+
+    @Spawns("PlayerNeutral") public Entity newPlayerNeutral(SpawnData data) {
+        return entityBuilder(data)
+                .view("player/PlayerNeutral.png")
+                .build();
+    }
+    @Spawns("PlayerNeutral2") public Entity newPlayerNeutral2(SpawnData data) {
+        return entityBuilder(data)
+                .view("player/PlayerNeutral2.png")
+                .build();
+    }
+    @Spawns("PlayerUp") public Entity newPlayerUp(SpawnData data) {
+        return entityBuilder(data)
+                .view("player/PlayerUp.png")
+                .build();
+    }
+    @Spawns("PlayerLeft") public Entity newPlayerLeft(SpawnData data) {
+        return entityBuilder(data)
+                .view("player/PlayerLeft.png")
+                .build();
+    }
+    @Spawns("PlayerDown") public Entity newPlayerDown(SpawnData data) {
+        return entityBuilder(data)
+                .view("player/PlayerDown.png")
+                .build();
+    }
+    @Spawns("PlayerRight") public Entity newPlayerRight(SpawnData data) {
+        return entityBuilder(data)
+                .view("player/PlayerRight.png")
+                .build();
+    }
+    @Spawns("PlayerDead") public Entity newPlayerDead(SpawnData data) {
+        return entityBuilder(data)
+                .view("player/PlayerDead.png")
                 .build();
     }
 
     @Spawns("Terrible") public Entity newTerrible(SpawnData data) {
         return entityBuilder(data)
-                .view("Terrible.png")
+                .view("ratings/Terrible.png")
                 .build();
     }
     @Spawns("Okay") public Entity newOkay(SpawnData data) {
         return entityBuilder(data)
-                .view("Okay.png")
+                .view("ratings/Okay.png")
                 .build();
     }
     @Spawns("Good") public Entity newGood(SpawnData data) {
         return entityBuilder(data)
-                .view("Good.png")
+                .view("ratings/Good.png")
                 .build();
     }
     @Spawns("Perfect") public Entity newPerfect(SpawnData data) {
         return entityBuilder(data)
-                .view("Perfect.png")
+                .view("ratings/Perfect.png")
                 .build();
     }
     //endregion
@@ -84,11 +120,17 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
         misses.setText("Misses: " + num);
     }
 
-    private static Texture player;
-    public static void setPlayer(String newTexture) {
-        if(newTexture == null) throw new NullPointerException("newTexture is null");
-        else if(newTexture.isEmpty()) throw new NullPointerException("newTexture is empty");
-        else player = FXGL.getAssetLoader().loadTexture(newTexture);
+    private static Entity player;
+    public static Entity getPlayer() {
+        return player;
+    }
+    public static void setPlayer(Entity newEntity) {
+        if(newEntity != null) {
+            player = newEntity;
+        }
+        else {
+            throw new NullPointerException("newEntity is null");
+        }
     }
     //endregion
 
@@ -98,12 +140,12 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
 
         FXGL.getGameWorld().addEntity(FXGL.entityBuilder()
                 .at(0, 0)
-                .view("ArrowBackground.png")
+                .view("backgrounds/ArrowBackground.png")
                 .buildAndAttach());
 
         FXGL.getGameWorld().addEntity(FXGL.entityBuilder()
                 .at(256, 0)
-                .view("StageBackground.png")
+                .view("backgrounds/StageBackground.png")
                 .buildAndAttach());
 
         spawn("ArrowRed",    0,   0);
@@ -125,10 +167,8 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
         misses.setStyle("-fx-fill: white;");
         FXGL.getGameScene().addUINode(misses);
 
-        player = FXGL.getAssetLoader().loadTexture("PlayerNeutral.png");
-        player.setTranslateX(320);
-        player.setTranslateY(210);
-        FXGL.getGameScene().addUINode(player);
+        player = spawn("PlayerNeutral", 330, 100);
+        FXGL.getGameWorld().addEntity(player);
     }
     //endregion
 }
