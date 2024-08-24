@@ -24,26 +24,21 @@ public class CustomPauseMenu extends FXGLMenu {
         super(type);
 
         Text title = FXGL.getUIFactoryService().newText("Untitled Rhythm Game", Color.WHITE, FontType.MONO, 40.0);
+
         Button resumeButton = new Button("Resume Game");
-        Button exitButton = new Button("Exit Game");
-
-        VBox window = getWindow(title, resumeButton, exitButton);
-
-
         resumeButton.setOnAction(e -> {
             RhythmApp.resumeGame();
             fireResume();
         });
 
-
+        Button exitButton = new Button("Exit Game");
         exitButton.setOnAction(e -> fireExit());
 
-
+        VBox window = getWindow(title, resumeButton, exitButton);
         getContentRoot().getChildren().add(window);
     }
 
-    @NotNull
-    private VBox getWindow(Text title, Button startButton, Button browseFilesButton) {
+    @NotNull private VBox getWindow(Text title, Button startButton, Button browseFilesButton) {
         VBox menuBox = new VBox(10, title, startButton, browseFilesButton);
         menuBox.setTranslateY(getAppHeight() / 2.0 - 50);
         menuBox.setAlignment(Pos.CENTER);
@@ -58,5 +53,3 @@ public class CustomPauseMenu extends FXGLMenu {
     }
     //endregion
 }
-
-

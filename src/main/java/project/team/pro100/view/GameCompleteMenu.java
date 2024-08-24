@@ -12,10 +12,9 @@ import javafx.scene.text.Text;
 import project.team.pro100.RhythmApp;
 
 public class GameCompleteMenu extends FXGLMenu {
-
+    //region Methods (Click To Expand)
     public GameCompleteMenu() {
         super(MenuType.GAME_MENU);
-
 
         int score = RhythmApp.getScore();
         int misses = RhythmApp.getMisses();
@@ -36,6 +35,7 @@ public class GameCompleteMenu extends FXGLMenu {
     }
 
     private String calculateGrade(int misses) {
+        // TODO: Add a grading system that incorporates user score.
         if (misses == 0) return "A";
         else if (misses <= 5) return "B";
         else if (misses <= 10) return "C";
@@ -55,4 +55,5 @@ public class GameCompleteMenu extends FXGLMenu {
 
         return window;
     }
+    //endregion
 }

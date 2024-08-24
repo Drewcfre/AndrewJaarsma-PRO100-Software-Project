@@ -62,12 +62,13 @@ public class AudioController {
     }
 
     public static void stopStartSound(boolean paused) {
-        if (paused) {
+        if(paused) {
             playAudio.pause();
             soundValueOutput.pause();
-        } else {
-            soundValueOutput.play();
+        }
+        else {
             playAudio.play();
+            soundValueOutput.play();
         }
     }
     //endregion

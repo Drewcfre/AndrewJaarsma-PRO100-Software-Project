@@ -28,7 +28,10 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
 public class CustomMainMenu extends FXGLMenu {
+    //region Variables/Getters/Setters (Click To Expand)
     private File selectedFile;
+    //endregion
+
     //region Methods (Click To Expand)
     public CustomMainMenu(MenuType type) {
         super(type);
@@ -52,7 +55,9 @@ public class CustomMainMenu extends FXGLMenu {
                 fireNewGame();
                 RhythmApp.setEndOfFile(false);
             }
-            else errorBox.setVisible(true);
+            else {
+                errorBox.setVisible(true);
+            }
         });
 
         browseFilesButton.setOnAction(e -> {
@@ -96,7 +101,7 @@ public class CustomMainMenu extends FXGLMenu {
         window.setBackground(
                 new Background(
                         new BackgroundImage(
-                                new Image("file:src/main/resources/assets/textures/mainBackground.png", true),
+                                new Image("file:src/main/resources/assets/textures/backgrounds/MainBackground.png", true),
                                 BackgroundRepeat.NO_REPEAT,
                                 BackgroundRepeat.NO_REPEAT,
                                 BackgroundPosition.CENTER,
