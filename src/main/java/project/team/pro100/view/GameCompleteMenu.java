@@ -14,31 +14,37 @@ import javafx.scene.text.Text;
 import project.team.pro100.RhythmApp;
 
 public class GameCompleteMenu extends FXGLMenu {
-    private static final int misses = RhythmApp.getMisses();
     //region Methods (Click To Expand)
     public GameCompleteMenu() {
         super(MenuType.GAME_MENU);
 
-        int score = RhythmApp.getScore();
-//        int misses = RhythmApp.getMisses();
+        int playerScore = RhythmApp.getScore();
+        int maxScore = RhythmApp.getTotalArrows()*100;
+        int misses = RhythmApp.getMisses();
 
         ImageView resultImage = new ImageView();
 
         resultImage.setImage(FXGL.image(calculateGrade()));
-        resultImage.setRotate(-10);
+        resultImage.setRotate(-20);
         resultImage.setY(100);
+        resultImage.setFitWidth(100);
+        resultImage.setFitHeight(100);
 
 
-        String winString = String.format("Score: %d   Grade: ", score);
+        String winString1 = String.format("Score: %d/%d   Grade: ", playerScore, maxScore);
+        String winString2 = String.format("Misses: %d", misses);
 
         Text title = FXGL.getUIFactoryService().newText("Song Complete!", Color.WHITE, FontType.MONO, 40.0);
-        Text winText = FXGL.getUIFactoryService().newText(winString, Color.BLACK, FontType.MONO, 25.0);
+        Text winText1 = FXGL.getUIFactoryService().newText(winString1, Color.BLACK, FontType.MONO, 25.0);
+        Text winText2 = FXGL.getUIFactoryService().newText(winString2, Color.RED, FontType.MONO, 25.0);
         Button backToMenu = new Button("Back to Main Menu");
 
-        HBox winLine = new HBox(winText, resultImage);
-        winLine.setAlignment(Pos.CENTER);
+        HBox resultsLine1 = new HBox(winText1, resultImage);
+        HBox resultsLine2 = new HBox(winText2);
+        resultsLine1.setAlignment(Pos.CENTER);
+        resultsLine2.setAlignment(Pos.CENTER);
 
-        VBox window = createWindow(title, winLine, backToMenu);
+        VBox window = createWindow(title, resultsLine1, resultsLine2, backToMenu);
 
         backToMenu.setOnAction(e -> FXGL.getGameController().gotoMainMenu());
 
@@ -47,15 +53,16 @@ public class GameCompleteMenu extends FXGLMenu {
     }
 
     private String calculateGrade() {
+        double percentage = (double) RhythmApp.getScore() / (RhythmApp.getTotalArrows() * 100) * 100;
         // TODO: Add a grading system that incorporates user score.
-        if (GameCompleteMenu.misses == 0) return "ratings/Perfect.png";
-        else if (GameCompleteMenu.misses <= 5) return "ratings/Good.png";
-        else if (GameCompleteMenu.misses <= 10) return "ratings/Okay.png";
+        if (percentage >= 70) return "ratings/Perfect.png";
+        else if (percentage >= 60) return "ratings/Good.png";
+        else if (percentage >= 50) return "ratings/Okay.png";
         else return "ratings/Terrible.png";
     }
 
-    private VBox createWindow(Text title, HBox hbox, Button backToMenu) {
-        VBox menuBox = new VBox(10, title, hbox, backToMenu);
+    private VBox createWindow(Text title, HBox hBox1, HBox hBox2, Button backToMenu) {
+        VBox menuBox = new VBox(10, title, hBox1, hBox2,  backToMenu);
         menuBox.setAlignment(Pos.CENTER);
         menuBox.setTranslateY(FXGL.getAppHeight() / 2.0 - 50);
 
