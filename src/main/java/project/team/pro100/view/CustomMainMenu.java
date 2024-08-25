@@ -61,6 +61,12 @@ public class CustomMainMenu extends FXGLMenu {
         });
 
         browseFilesButton.setOnAction(e -> {
+            File directory = new File("SONGS_FOLDER");
+            if (!directory.mkdirs()) {
+                System.out.println();
+            }
+            fileChooser.setInitialDirectory(directory);
+
             File file = fileChooser.showOpenDialog(null);
             if (file != null) {
                 saveFileToGameFolder(file);
@@ -77,11 +83,6 @@ public class CustomMainMenu extends FXGLMenu {
 
     private void saveFileToGameFolder(File file) {
         try {
-            File dir = new File("SONGS_FOLDER");
-            if (!dir.mkdirs()) {
-                System.out.println("Could not create folder " + dir.getAbsolutePath());
-            }
-
             Path destination = Path.of("SONGS_FOLDER", file.getName());
             Files.copy(file.toPath(), destination, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
