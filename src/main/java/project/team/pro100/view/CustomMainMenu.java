@@ -13,7 +13,6 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.ui.FontType;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -102,7 +101,7 @@ public class CustomMainMenu extends FXGLMenu {
         window.setBackground(
                 new Background(
                         new BackgroundImage(
-                                new Image("file:src/main/resources/assets/textures/backgrounds/MainBackground.png", true),
+                                FXGL.image("backgrounds/MainBackground.png"),
                                 BackgroundRepeat.NO_REPEAT,
                                 BackgroundRepeat.NO_REPEAT,
                                 BackgroundPosition.CENTER,
