@@ -41,13 +41,16 @@ public class AudioController {
                         RhythmApp.getList(1).add(new Arrow(spawn("ArrowGreen", 64, 576)));
                         RhythmApp.setTotalArrows(RhythmApp.getTotalArrows() + 1);
                     }
-                    else if ((int) magnitudes[i] >= -31 && (int) magnitudes[i] <= -32) {
+                    else if ((int) magnitudes[i] >= -32 && (int) magnitudes[i] <= -31) {
                         RhythmApp.getList(2).add(new Arrow(spawn("ArrowBlue", 192, 576)));
                         RhythmApp.setTotalArrows(RhythmApp.getTotalArrows() + 1);
                     }
-                    else if ((int) magnitudes[i] == -26) {
+                    else if ((int) magnitudes[i] >= -27 && (int) magnitudes[i] <= -26) {
                         RhythmApp.getList(3).add(new Arrow(spawn("ArrowYellow", 256, 512)));
                         RhythmApp.setTotalArrows(RhythmApp.getTotalArrows() + 1);
+                    }
+                    if ((int) magnitudes[i] >= -26 && (int) magnitudes[i] <= -30||(int) magnitudes[i] >= -31 && (int) magnitudes[i] <= -40){
+                        System.out.println(magnitudes[i]);
                     }
                 }
             }));

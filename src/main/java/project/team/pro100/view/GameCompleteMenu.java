@@ -31,7 +31,7 @@ public class GameCompleteMenu extends FXGLMenu {
         resultImage.setFitHeight(100);
 
 
-        String winString1 = String.format("Score: %d/%d   Grade: ", playerScore, maxScore);
+        String winString1 = String.format("Score: %d/%d  Grade:", playerScore, maxScore);
         String winString2 = String.format("Misses: %d", misses);
 
         Text title = FXGL.getUIFactoryService().newText("Song Complete!", Color.WHITE, FontType.MONO, 40.0);
