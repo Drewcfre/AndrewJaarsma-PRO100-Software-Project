@@ -22,9 +22,11 @@ import project.team.pro100.RhythmApp;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.Objects;
 
 public class CustomMainMenu extends FXGLMenu {
     //region Variables/Getters/Setters (Click To Expand)
@@ -60,7 +62,7 @@ public class CustomMainMenu extends FXGLMenu {
         });
 
         browseFilesButton.setOnAction(e -> {
-            File directory = new File("SONGS_FOLDER");
+            File directory = getSongsFolder();
             if (!directory.mkdirs()) {
                 System.out.println();
             }
@@ -69,8 +71,8 @@ public class CustomMainMenu extends FXGLMenu {
             File file = fileChooser.showOpenDialog(null);
             if (file != null) {
                 saveFileToGameFolder(file);
-                selectedFile = new File("SONGS_FOLDER/" + file.getName());
-                RhythmApp.setMediaLocation(new File("SONGS_FOLDER/" + file.getName()));
+                selectedFile = new File(directory +"/"+ file.getName());
+                RhythmApp.setMediaLocation(selectedFile);
                 errorBox.setVisible(false);
             }
         });
@@ -82,10 +84,19 @@ public class CustomMainMenu extends FXGLMenu {
 
     private void saveFileToGameFolder(File file) {
         try {
-            Path destination = Path.of("SONGS_FOLDER", file.getName());
+            Path destination = Path.of(String.valueOf(getSongsFolder()), file.getName());
             Files.copy(file.toPath(), destination, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    private File getSongsFolder() {
+        try {
+            Path resourcePath = Path.of(Objects.requireNonNull(getClass().getClassLoader().getResource("SONGS_FOLDER")).toURI());
+            return resourcePath.toFile();
+        } catch (URISyntaxException | NullPointerException e) {
+            throw new RuntimeException("Failed to locate the SONGS_FOLDER in resources.", e);
         }
     }
 
