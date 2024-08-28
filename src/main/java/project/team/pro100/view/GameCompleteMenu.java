@@ -54,7 +54,6 @@ public class GameCompleteMenu extends FXGLMenu {
 
     private String calculateGrade() {
         double percentage = (double) RhythmApp.getScore() / (RhythmApp.getTotalArrows() * 100) * 100;
-        // TODO: Add a grading system that incorporates user score.
         if (percentage >= 70) return "ratings/Perfect.png";
         else if (percentage >= 60) return "ratings/Good.png";
         else if (percentage >= 50) return "ratings/Okay.png";

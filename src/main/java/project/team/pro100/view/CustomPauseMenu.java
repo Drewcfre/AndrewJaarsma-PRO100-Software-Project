@@ -12,11 +12,13 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.ui.FontType;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import org.jetbrains.annotations.NotNull;
 import project.team.pro100.RhythmApp;
+import project.team.pro100.controller.AudioController;
 
 public class CustomPauseMenu extends FXGLMenu {
     //region Methods (Click To Expand)
@@ -31,15 +33,26 @@ public class CustomPauseMenu extends FXGLMenu {
             fireResume();
         });
 
+        Text txtVolume = FXGL.getUIFactoryService().newText("Volume: ", Color.WHITE, FontType.MONO, 20.0);
+
+        Slider volumeSlider = new Slider(0, 100, 1);
+        volumeSlider.setShowTickLabels(true);
+        volumeSlider.setValue(50);
+        volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> AudioController.setVolume(newValue.doubleValue()/100));
+
+
+        HBox volumeBox = new HBox(txtVolume, volumeSlider);
+        volumeBox.setAlignment(Pos.CENTER);
+
         Button exitButton = new Button("Exit Game");
         exitButton.setOnAction(e -> fireExit());
 
-        VBox window = getWindow(title, resumeButton, exitButton);
+        VBox window = getWindow(title, volumeBox, resumeButton, exitButton);
         getContentRoot().getChildren().add(window);
     }
 
-    @NotNull private VBox getWindow(Text title, Button startButton, Button browseFilesButton) {
-        VBox menuBox = new VBox(10, title, startButton, browseFilesButton);
+    @NotNull private VBox getWindow(Text title, HBox volumeBox, Button startButton, Button browseFilesButton) {
+        VBox menuBox = new VBox(10, title, volumeBox, startButton, browseFilesButton);
         menuBox.setTranslateY(getAppHeight() / 2.0 - 50);
         menuBox.setAlignment(Pos.CENTER);
 

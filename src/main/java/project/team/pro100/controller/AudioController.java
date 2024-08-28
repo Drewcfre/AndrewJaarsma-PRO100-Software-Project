@@ -24,6 +24,7 @@ public class AudioController {
         soundValueOutput = new MediaPlayer(media);
         soundValueOutput.setMute(true);
         playAudio = new MediaPlayer(media);
+        playAudio.setVolume(0.5);
 
         playAudio.setOnEndOfMedia(() -> {
             setEndOfFile(true);
@@ -73,6 +74,10 @@ public class AudioController {
             playAudio.play();
             soundValueOutput.play();
         }
+    }
+
+    public static void setVolume(double volume) {
+        playAudio.setVolume(volume);
     }
     //endregion
 }
