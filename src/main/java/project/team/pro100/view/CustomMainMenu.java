@@ -22,11 +22,10 @@ import project.team.pro100.RhythmApp;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.util.Objects;
+import java.net.URI;
+import java.nio.file.*;
+import java.util.HashMap;
+import java.util.stream.Stream;
 
 public class CustomMainMenu extends FXGLMenu {
     //region Variables/Getters/Setters (Click To Expand)
@@ -54,6 +53,10 @@ public class CustomMainMenu extends FXGLMenu {
         startButton.setOnAction(e -> {
             if (selectedFile != null) {
                 fireNewGame();
+                RhythmApp.setScore(0);
+                RhythmApp.setMisses(0);
+                RhythmApp.setCounter(0);
+                RhythmApp.setTotalArrows(0);
                 RhythmApp.setEndOfFile(false);
             }
             else {
@@ -93,10 +96,41 @@ public class CustomMainMenu extends FXGLMenu {
 
     private File getSongsFolder() {
         try {
-            Path resourcePath = Path.of(Objects.requireNonNull(getClass().getClassLoader().getResource("SONGS_FOLDER")).toURI());
-            return resourcePath.toFile();
-        } catch (URISyntaxException | NullPointerException e) {
-            throw new RuntimeException("Failed to locate the SONGS_FOLDER in resources.", e);
+            Path appDataDir = Path.of(System.getProperty("user.home"), ".myapp", "songs_folder");
+            Path songsFolderPath = appDataDir.resolve("SONGS_FOLDER");
+
+            if (Files.notExists(songsFolderPath)) {
+                Files.createDirectories(songsFolderPath);
+
+                var resource = getClass().getClassLoader().getResource("SONGS_FOLDER");
+                if (resource == null) {
+                    throw new RuntimeException("SONGS_FOLDER not found in resources.");
+                }
+
+                if (resource.toString().startsWith("jar:")) {
+                    try (FileSystem fileSystem = FileSystems.newFileSystem(URI.create(resource.toString().split("!")[0]), new HashMap<>())) {
+                        Path jarPath = fileSystem.getPath("SONGS_FOLDER");
+                        try (Stream<Path> paths = Files.walk(jarPath)) {
+                            paths.forEach(source -> {
+                                try {
+                                    Path destination = songsFolderPath.resolve(jarPath.relativize(source).toString());
+                                    if (Files.isDirectory(source)) {
+                                        Files.createDirectories(destination);
+                                    } else {
+                                        Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
+                                    }
+                                } catch (IOException e) {
+                                    throw new RuntimeException("Failed to copy resource from JAR to permanent directory", e);
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+
+            return songsFolderPath.toFile();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to locate or extract the SONGS_FOLDER in resources.", e);
         }
     }
 
