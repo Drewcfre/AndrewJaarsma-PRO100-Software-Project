@@ -19,8 +19,9 @@ public class GameCompleteMenu extends FXGLMenu {
         super(MenuType.GAME_MENU);
 
         int playerScore = RhythmApp.getScore();
-        int maxScore = RhythmApp.getTotalArrows()*100;
+        int maxScore = RhythmApp.getTotalArrows() * 100;
         int misses = RhythmApp.getMisses();
+        double accuracy = 100 - (((double) RhythmApp.getMisses() / RhythmApp.getTotalArrows()) * 100);
 
         ImageView resultImage = new ImageView();
 
@@ -32,7 +33,7 @@ public class GameCompleteMenu extends FXGLMenu {
 
 
         String winString1 = String.format("Score: %d/%d  Grade:", playerScore, maxScore);
-        String winString2 = String.format("Misses: %d", misses);
+        String winString2 = String.format("Misses: %d  Accuracy: %.2f%%", misses, accuracy);
 
         Text title = FXGL.getUIFactoryService().newText("Song Complete!", Color.WHITE, FontType.MONO, 40.0);
         Text winText1 = FXGL.getUIFactoryService().newText(winString1, Color.BLACK, FontType.MONO, 25.0);
@@ -61,7 +62,7 @@ public class GameCompleteMenu extends FXGLMenu {
     }
 
     private VBox createWindow(Text title, HBox hBox1, HBox hBox2, Button backToMenu) {
-        VBox menuBox = new VBox(10, title, hBox1, hBox2,  backToMenu);
+        VBox menuBox = new VBox(10, title, hBox1, hBox2, backToMenu);
         menuBox.setAlignment(Pos.CENTER);
         menuBox.setTranslateY(FXGL.getAppHeight() / 2.0 - 50);
 
