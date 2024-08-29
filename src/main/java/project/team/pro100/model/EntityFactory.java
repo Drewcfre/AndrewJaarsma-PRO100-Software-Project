@@ -19,9 +19,6 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
     //region Entity Spawns (Click to Expand)
-    // IntelliJ wrongly flags these methods as unused.
-    // Suppress the unused inspection in this file to get rid of the warnings.
-    //TODO: If anyone wants to, you could replace most of these with a single generic method.
     @Spawns("ArrowRed") public Entity newArrowRed(SpawnData data) {
         return entityBuilder(data)
                 .view("arrows/ArrowRed.png")

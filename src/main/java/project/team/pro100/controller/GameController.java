@@ -19,8 +19,6 @@ import static com.almasb.fxgl.dsl.FXGL.onKeyDown;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
 
 public class GameController {
-    //TODO: Game Controller is unoptimized and contains repetitive code.
-
     //region Methods (Click To Expand)
     public static void userInput() {
         onKeyDown(KeyCode.W, () -> whenKeyPressed("PlayerUp", 150, 0));
